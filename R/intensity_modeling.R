@@ -1,10 +1,10 @@
 
-n(arr, mixnum = 2){
+betamix.2d <- function(arr, mixnum = 2){
 
   x <- as.vector(arr)
   min.intensity <- quantile(x, probs = 0.99) |> unname()
-  if (min.intensity == 0){
-    warning("No signal in array: All values 0. Returning `NA`")
+  if (max(x) == 0){
+    warning("No signal in slice: All values 0. Returning `NA`")
     return(NA)
   }
   x <- x [x > min.intensity]
@@ -14,16 +14,15 @@ n(arr, mixnum = 2){
   x <- scales::rescale(x, to = c(0.0001,0.9999), from = original.scale.x)
   
   x.beta <- data.frame(y = x)
-  m <- betamix(y ~ 1, data = x.beta, k = 1:mixnum)
+  m <- betareg::betamix(y ~ 1, data = x.beta, k = 1:mixnum)
   
-  if (length(unique(clusters(m))) > 1){ 
+  if (length(unique(modeltools::clusters(m))) > 1){ 
     
     mu <- plogis(coef(m)[,1])
     phi <- exp(coef(m)[,2])
     
     a <- mu * phi
     b <- (1 - mu) * phi
-    cl <- clusters(m)
     
     ys <- seq(0, 1, by = 0.01)
     
@@ -52,7 +51,7 @@ n(arr, mixnum = 2){
 }
 
 betamix.3d <- function(arr, mixnum=2, n.cores=1, ...){
-  #' Takes a 3D array
+  
   dims <- dim(arr)
   Z <- dims[3]
   threshold <- parallel::mclapply(1:Z, function(z) betamix.2d(arr[,,z], mixnum), mc.cores=n.cores, ...) |> 

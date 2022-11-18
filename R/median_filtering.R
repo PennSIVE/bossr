@@ -1,5 +1,5 @@
 
-n(roi_mask, r = 10){
+median.filtering.3d <- function(roi_mask, r = 10){
   k <- mmand::shapeKernel(c(r,r,2), type="box")
   roi_mask_filtered <- mmand::medianFilter(roi_mask, k)
   return(roi_mask_filtered)
@@ -15,6 +15,7 @@ median.filtering.4d <- function(roi_mask, r = 10, n.cores=1, ...) {
   return(roi_mask_filtered)
 }
 
+#' @export
 median.filtering <- function(roi_mask, r = 10, n.cores=1, ...) {
   dims <- dim(roi_mask)
 

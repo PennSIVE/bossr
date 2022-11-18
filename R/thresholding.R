@@ -1,4 +1,4 @@
-hold.2d <- function(img, thr){
+threshold.2d <- function(img, thr){
     roi_mask <- (img < thr) |> apply(2, as.numeric)
     roi_mask[is.na(roi_mask)] <- 0 # override NA (cause: 0-everywhere slice)
     return(roi_mask)
@@ -32,6 +32,7 @@ threshold.4d <- function(img, thr, n.cores=1, ...){
     return(mask)
 }
 
+#' @export
 threshold.img <- function(img, thr, n.cores=1, ...){
   ndim.img <- length(dim(img))
   # assign dimensions if thr is a vector
@@ -42,7 +43,7 @@ threshold.img <- function(img, thr, n.cores=1, ...){
                     length(dim(thr)))
 
   # convert threshold matrix to vector if dimensions allow
-  #if (is.matrix(thr) & ndim.img <= 2) if (dim(thr)[2] == 1) thr = as.vector(thr) 
+  # if (is.matrix(thr) & ndim.img <= 2) if (dim(thr)[2] == 1) thr = as.vector(thr) 
 
   if (ndim.img == 2){ # img is a slice/matrix, thr should be one number
       if (ndim.thr != 0){
