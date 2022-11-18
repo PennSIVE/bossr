@@ -1,4 +1,4 @@
-Package: bossR
+Package: bossr
 Title: Beta-mixture Unsupervised Oligodendrocytes Segmentation System in R
 Version: 0.0.0.9000
 Authors@R: 
