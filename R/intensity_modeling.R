@@ -78,3 +78,19 @@ betamix.4d <- function(arr, mixnum=2, n.cores=1, ...) {
   threshold <- list2nifti(threshold, c(Z,T))
   return(threshold)
 }
+
+#' @export
+betamix.img <- function(arr, mixnum=2, n.cores=1, ...){
+    
+    ndim.img <- length(dim(arr))
+
+    if (ndim.img == 2){ # img is a slice/matrix, thr should be one number
+      betamix.2d(arr, mixnum=mixnum)
+
+    } else if (ndim.img == 3){ # img is volume, thr should be vector
+      betamix.3d(arr, mixnum=mixnum, n.cores=n.cores, ...)
+
+    } else if (ndim.img == 4){ # img is 4D array, thr should be a matrix
+      betamix.4d(arr, mixnum=mixnum, n.cores=n.cores, ...)
+  }
+}
