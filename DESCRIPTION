@@ -1,6 +1,6 @@
 Package: bossr
 Title: Beta-mixture Unsupervised Oligodendrocytes Segmentation System in R
-Version: 0.0.0.9000
+Version: 0.0.0.1
 Authors@R: 
     c(
         person("Virgilio", "Gonzenbach", , "vgonzenb@upenn.edu", role = c("aut"),
@@ -9,7 +9,8 @@ Authors@R:
            comment = c(ORCID = "0000-0003-2941-3717"))
     )
 Description: Functions for automated segmentation of oligodendrocytes in 2D, 3D and 4D arrays. Exported functions of 'bossR' detect dimensionality
-    of input arrays and call internal, parallellized functions for a user-friendly experience.
+    of input arrays and call internal, parallellized functions for a user-friendly experience. A companion data package 'bossrdata' is available
+    to enable users to follow along the examples in the vignettes. See the vignettes for more information on how to install 'bossrdata'.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -20,3 +21,6 @@ Imports:
     oro.nifti, 
     mmand, 
     parallel
+Suggests:
+    bossrdata
+Additional_repositories: https://pennsive.github.io/drat
