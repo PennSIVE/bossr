@@ -1,17 +1,3 @@
-
-#' @export
-connect.components <- function(roi_mask, r = 21){
-    
-    k <- mmand::shapeKernel(c(r,r,3,3), type='box')
-    roi_labels <- mmand::components(roi_mask, k)
-
-    return(roi_labels)
-}
-
-subset_arr <- function(){
-    narray::subset(arr, list(1:2, 1:2, 1:2, 1:3))
-}
-
 # subset based on last dimension when dimensionality is not known
 # last_ind(arr, n) is equivalent to arr[,,n] and arr[,,,n] for 
 last_ind <- function(arr, n){
@@ -23,8 +9,44 @@ last_ind <- function(arr, n){
     do.call(`[`, c(list(arr), inds))
 }
 
+get_adjacent <- function(arr, k){
+    #' returns values that span at least k cells over `d`, i.e. last dim. of arr
+    dlength <- rev(dim(arr))[1]
+    # for each elem. in d 
+    adj.vals <- purrr::map(1:dlength, ~unique(as.vector(last_ind(arr, .x)))) |> # list uniques at each t
+        slider::slide(~purrr::reduce(.x, intersect), .after = k - 1) |> # take intersects in rolling windows of size `k - 1`
+        purrr::reduce(c) |> # concatenate 
+        unique() |> 
+        sort()
+    adj.vals[-1] # skip 0
+}
+get_size <- function(arr, label) data.frame(sum(arr == label))
+get_centroid <- function(arr, label){
+    centroid <- which(arr == label, arr.ind = TRUE) |>
+        apply(2, mean) |> 
+        as.list()
+    centroid
+}
+make_cell_df <- function(arr, label) {
+    if(label)
+    list(label, get_size(arr, label), get_centroid(arr, label)) |> 
+    purrr::reduce(c) |>
+    as.data.frame() |>
+    setNames(c('index','size', 'x', 'y', 'z')) #|>
+    #dplyr::filter(size > size.thr)
+}
+
 #' @export
-track.components <- function(roi_labels, z = NULL, k = 2, size.thr = 10){
+connect.components <- function(roi_mask, r = 21){
+    
+    k <- mmand::shapeKernel(c(r,r,3,3), type='box')
+    roi_labels <- mmand::components(roi_mask, k)
+
+    return(roi_labels)
+}
+
+#' @export
+track.components <- function(roi_labels, k = 2, size.thr = 10){
     #' 1. subset array based on Z <- should this be done outside the function?
     #' 2. split into list based on t
     #' 3. take unique for each split (map)
@@ -34,78 +56,32 @@ track.components <- function(roi_labels, z = NULL, k = 2, size.thr = 10){
     Z <- dim(roi_labels)[3]
 
     # TODO: abstract pattern for z or t
-    get_adjacent <- function(arr, k){
-
-        #' returns values that span at least k cells over `d`, i.e. last dim. of arr
-        dlength <- rev(dim(arr))[1]
-        # for each elem. in d 
-        adj.vals <- purrr::map(1:dlength, ~unique(as.vector(last_ind(arr, .x)))) |> # list uniques at each t
-            slider::slide(~purrr::reduce(.x, intersect), .after = k - 1) |> # take intersects in rolling windows of size `k - 1`
-            purrr::reduce(c) |> # concatenate 
-            unique() |> 
-            sort()
-        adj.vals[-1] # skip 0
-    }
-    T.adj.vals <- purrr::map(1:T, ~unique(as.vector(last_ind(roi_labels, .x)))) |> # list uniques at each t
-        slider::slide(~purrr::reduce(.x, intersect), .after = k - 1) |> # take intersects in rolling windows of size `k - 1`
-        reduce(c) |> # concatenate 
-        unique()[-1] # skip 0s
+    T.adj.vals <- get_adjacent(roi_labels, k)
+    cell_df <- purrr::map(1:T, ~ get_adjacent(roi_labels[,,,.x], k)) |>
+        purrr::map(~intersect(T.adj.vals)) |>
+        purrr::imap(~ if(length(.x) != 0) make_cell_df(roi_labels[,,,.y], .x) |> cbind(t = .y)) |> 
+        dplyr::bind_rows() |>
+        dplyr::filter(size > size.thr)
     
-    get_size <- function(label) data.frame( sum(roi_labels[,,,t] == label))
-    get_centroid <- function(label){
-        centroid <- which(roi_labels[,,,t] == label, arr.ind = TRUE) |>
-            apply(index.xyz, 2, mean) |> 
-            as.list()
-        centroid
-    }
-
-    # TODO: use map -> use future_map
-    get_z_adjacent <- function(roi_labels){
-        Z.adj.vals <- purrr::map(1:Z, ~unique(as.vector(roi_labels[,,.x]))) |> # list uniques at each z in current t
-            slider::slide(~purrr::reduce(.x, intersect), .after = k - 1) |> # take intersects in rolling windows of size `k - 1`
-            reduce(c) |> # concatenate 
-            unique()[-1] # exclude 0
-        #Z.adj.vals <- c(Z.adj.vals, Z.adj.val) # something wrong here?
-
-        Z.adj.vals <- unique(Z.adj.vals) # something wrong here?
-        Z.adj.vals
-    }
-    #Z.adj.vals <- c()
-    purrr:map(1:T, ~ get_z_adjacent(roi_labels[,,,.x]) |> )
-    for (t in 1:T){
-        # 
-        purrr:map(1:Z, get_z_adjacent(roi_labels)
-        adj.vals <- intersect(Z.adj.vals, T.adj.vals)
-        adj.vals
-        Z.adj.vals <- purrr::map(1:Z, ~unique(as.vector(roi_labels[,,.x,t]))) |> # list uniques at each z in current t
-            slider::slide(~purrr::reduce(.x, intersect), .after = k - 1) |> # take intersects in rolling windows of size `k - 1`
-            reduce(c) |> # concatenate 
-            unique()[-1] # exclude 0
-        #Z.adj.vals <- c(Z.adj.vals, Z.adj.val) # something wrong here?
-
-        Z.adj.vals <- unique(Z.adj.vals) # something wrong here?
-        adj.vals <- intersect(Z.adj.vals, T.adj.vals)
-
-        cell_df <- purrr::map(adj.vals, ~ list(.x, get_size(.x), get_centroid(.x), t)) |> 
-            reduce(c) |>
-            as.data.frame() |>
-            setNames(c('index','size', 'x', 'y', 'z', 't')) |>
-            dplyr::filter(size > size.thr)
-
-        cell_df
-    }
-    # After mapping above dplyr::bind_rows()
-
+    cell_df
 }
 
-#' TODO: regarrange function above
-#' _ definitions out of loop
-#' _ make the for loop a mapping
-#' _ abstract pattern of contiguity check
-#' _ should these be separate functions?
-# Keep this?
-get.z.adj <- function(roi_labels, z = NULL){
-    if (is.null(z)) z = 1:dim(roi_labels)[3]
+#' @export
+get.delta.n <- function(cell_df){
 
+    # get number of cells in each timepoint
+    ncells <- cell_df |> 
+        split(cell_df$t) |>
+        purrr::map_int(~nrow(.x))
 
+    ## assign 0s for timepoints without cells
+    Ts <- names(ncells) |> as.numeric()
+    max_t <- max(Ts)
+    diff <- setdiff(1:max_t, Ts)
+    ncells <- c(ncells, rep(0, length(diff))) |> setNames(c(names(ncells), diff))
+
+    # sort by t
+    ncells <- ncells[order(as.numeric(names(ncells)))]
+    added <- slider::slide_int(ncells, ~.x[2] - .x[1], .before=1)
+    added
 }
