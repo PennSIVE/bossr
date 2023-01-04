@@ -33,4 +33,3 @@ median.filtering <- function(roi_mask, r = 10, n.cores=1, ...) {
     }
   }
 }
-

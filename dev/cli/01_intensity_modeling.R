@@ -11,23 +11,23 @@ p <- add_argument(p, "--run4d", flag=TRUE, help = 'Run 4d version')
 argv <- parse_args(p)
 
 message('Reading array...')
-system.time(nii <- readRDS('results/nii.xyzt')) 
+system.time(nii <- readRDS('dev/results/nii.xyzt')) 
 
 # Save output
 if (argv$run2d) {
   message("Finding threshold of 1 slice...")
   system.time(thresh.xy <- betamix.2d(nii[,,1,1]))
-  saveRDS(thresh.xy, "results/thresh.xy")
+  saveRDS(thresh.xy, "dev/results/thresh.xy")
 }
 
 if (argv$run3d) {
   message(sprintf("Finding threshold of a volume i.e. %d slices", dim(nii)[3]))
   system.time(thresh.xyz <- betamix.3d(nii[,,,1], n.cores=Sys.getenv('LSB_DJOB_NUMPROC')))
-  saveRDS(thresh.xyz, "results/thresh.xyz")
+  saveRDS(thresh.xyz, "dev/results/thresh.xyz")
 } 
 
 if (argv$run4d) {
   message(sprintf("Find threshold of a 4D array i.e. %d slices", dim(nii)[3] * dim(nii)[4]))
   system.time(thresh.xyzt <- betamix.4d(nii, n.cores=Sys.getenv('LSB_DJOB_NUMPROC')))
-  saveRDS(thresh.xyzt, "results/thresh.xyzt")
+  saveRDS(thresh.xyzt, "dev/results/thresh.xyzt")
 }

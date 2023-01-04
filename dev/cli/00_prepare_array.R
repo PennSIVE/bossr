@@ -63,12 +63,12 @@ system.time(nii <- list2nifti(tiff.in, dims)) # TODO: time it
 # Save outputs
 message("Rotating a slice")
 system.time(nii.xy <- rotate.xy(nii[,,1,1]))
-saveRDS(nii.xy, "results/nii.xy")
+saveRDS(nii.xy, "dev/results/nii.xy")
 
 message(sprintf("Rotating a volume i.e. %d", dim(nii)[3]))
 system.time(nii.xyz <- rotate.xyz(nii[,,,1]))
-saveRDS(nii.xyz, "results/nii.xyz")
+saveRDS(nii.xyz, "dev/results/nii.xyz")
 
 message(sprintf("Rotating 4D array i.e. %d slices", dim(nii)[3] * dim(nii)[4]))
 system.time(nii.xyzt <- rotate.xyzt(nii))
-saveRDS(nii.xyzt, "results/nii.xyzt")
+saveRDS(nii.xyzt, "dev/results/nii.xyzt")

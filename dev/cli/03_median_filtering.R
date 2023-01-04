@@ -13,19 +13,19 @@ argv <- parse_args(p)
 if (argv$run3d) {
 
   message('Reading ROI mask...')
-  system.time(roi_mask <- readRDS('results/roi_mask.xyz')) 
+  system.time(roi_mask <- readRDS('dev/results/roi_mask.xyz')) 
 
   message("Applying median filter to a volume")
   system.time(roi_mask_filtered <- median.filtering(roi_mask, n.cores=Sys.getenv('LSB_DJOB_NUMPROC')))
-  saveRDS(roi_mask_filtered, "results/roi_mask_filtered.xyz")
+  saveRDS(roi_mask_filtered, "dev/results/roi_mask_filtered.xyz")
 } 
 
 if (argv$run4d) {
 
   message('Reading ROI mask...')
-  system.time(roi_mask <- readRDS('results/roi_mask.xyzt'))
+  system.time(roi_mask <- readRDS('dev/results/roi_mask.xyzt'))
 
   message(sprintf("Applying median filter to 4D array i.e. %d volumes", dim(roi_mask)[4]))
   system.time(roi_mask_filtered <- median.filtering(roi_mask, n.cores=Sys.getenv('LSB_DJOB_NUMPROC')))
-  saveRDS(roi_mask_filtered, "results/roi_mask_filtered.xyzt")
+  saveRDS(roi_mask_filtered, "dev/results/roi_mask_filtered.xyzt")
 }
