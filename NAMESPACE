@@ -3,4 +3,5 @@
 S3method(median,filtering)
 export(betamix.img)
 export(connect.components)
+export(get.delta.n)
 export(threshold.img)
