@@ -1,4 +1,14 @@
-
+#' Calculate threshold from 2D array using beta mixture model
+#'
+#' This function takes a 2D array and the number of mixture components as inputs, and returns a threshold value. It first extracts values above a certain intensity from the array, scales these values between 0.0001 and 0.9999, fits a beta mixture model to these scaled values, and calculates a density difference between the two beta distributions. Finally, it scales the intersection point of these distributions back to the original scale of the array values and returns it as the threshold.
+#'
+#' @param arr A 2D array of values
+#' @param mixnum The number of mixture components to use in the beta mixture model. Default is 2.
+#' @return A threshold value
+#' @examples
+#' arr <- matrix(c(0, 0, 1, 5, 10, 20), nrow = 2, ncol = 3)
+#' betamix.2d(arr)
+#'   [1] 10
 betamix.2d <- function(arr, mixnum = 2){
 
   x <- as.vector(arr)
@@ -50,6 +60,20 @@ betamix.2d <- function(arr, mixnum = 2){
   return(threshold)
 }
 
+#' Calculate threshold from 3D array using beta mixture model
+#'
+#' This function takes a 3D array, the number of mixture components, number of cores and additional parameters as inputs, and returns a threshold value. It applies `betamix.2d` function on each slice of 3D array and  returns the threshold value of each slice.
+#' 
+#' @param arr A 3D array of values
+#' @param mixnum The number of mixture components to use in the beta mixture model. Default is 2.
+#' @param n.cores number of cores used in parallel computing. Default is 1.
+#' @param ... additional parameters passed to `mclapply`
+#' @return A threshold value
+#' @examples
+#' arr <- array(c(0, 0, 1, 5, 10, 20), c(2,3,3))
+#' betamix.3d(arr)
+#' 
+#'
 betamix.3d <- function(arr, mixnum=2, n.cores=1, ...){
   
   dims <- dim(arr)
@@ -59,6 +83,19 @@ betamix.3d <- function(arr, mixnum=2, n.cores=1, ...){
   return(threshold)
 }
 
+#' Calculate threshold from 4D array using beta mixture model
+#'
+#' This function takes a 4D array, the number of mixture components, number of cores and additional parameters as inputs, and returns a threshold value. It applies `betamix.3d` function on each time point of 4D array and  returns the threshold value of each time point.
+#' 
+#' @param arr A 4D array of values
+#' @param mixnum The number of mixture components to use in the beta mixture model. Default is 2.
+#' @param n.cores number of cores used in parallel computing. Default is 1.
+#' @param ... additional parameters passed to `mclapply`
+#' @return A threshold value
+#' @examples
+#' arr <- array(c(0, 0, 1, 5, 10, 20), c(2,3,3,3))
+#' betamix.4d(arr)
+#' 
 betamix.4d <- function(arr, mixnum=2, n.cores=1, ...) {
   dims <- dim(arr)
   Z <- dims[3]
@@ -79,6 +116,15 @@ betamix.4d <- function(arr, mixnum=2, n.cores=1, ...) {
   return(threshold)
 }
 
+#' Calculate threshold from image using beta mixture model
+#'
+#' This function takes an image array, number of mixture components, number of cores and additional parameters as inputs, and returns a threshold value. It detects the dimension of the image array and applies `betamix.2d()`, `betamix.3d()`, or `betamix.4d()` accordingly to calculate the threshold.
+#'
+#' @param arr image array
+#' @param mixnum The number of mixture components to use in the beta mixture model. Default is 2.
+#' @param n.cores number of cores used in parallel computing. Default is 1.
+#' @param ... additional parameters passed to `betamix.3d()` and `betamix.4d()` functions
+#' @return A threshold value
 #' @export
 betamix.img <- function(arr, mixnum=2, n.cores=1, ...){
     
