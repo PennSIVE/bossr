@@ -85,3 +85,42 @@ get.delta.n <- function(cell_df){
     added <- slider::slide_int(ncells, ~.x[2] - .x[1], .before=1)
     added
 }
+
+#' @export
+annot.dat <- function(dat, t){
+    index <- sort(unique(dat$index))
+  
+    result.index <- c()
+    for(i in index){
+      index.X <- dat[which(dat$index==i),"X"]
+      index.Y <- dat[which(dat$index==i),"Y"]
+      index.Z <- dat[which(dat$index==i),"Z"]
+
+      new.dat <- dat %>% filter(X <= max(index.X)+30 & X >= min(index.X)-30) %>% 
+        filter(Y <= max(index.Y)+30 & Y >= min(index.Y)-30) %>%
+        filter(Z <= max(index.Z)+5 & Z >= min(index.Z)-5) 
+
+      if(length(unique(new.dat$index)) >1 && length(unique(new.dat$T)) == nrow(new.dat)){
+        print(new.dat)
+        index.t <- c()
+        for(j in unique(new.dat$index)){
+          index.t <- c(index.t, dat[which(dat$index == j),"T"])
+        }
+
+        if(length(index.t) == length(unique(index.t))){
+          result.index<- rbind(result.index, sort(unique(new.dat$index)))}
+        else{
+          print("Good")
+        }
+
+      }else{
+        print("Good")
+      }
+    }
+    
+    result.index <- result.index[which(duplicated(result.index)==FALSE),]
+    for(i in 1:nrow(result.index)){
+      dat$index[which(dat$index==result.index[i,2])] <- result.index[i,1]
+    }
+    return(dat)
+}
