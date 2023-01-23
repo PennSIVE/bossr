@@ -8,7 +8,6 @@
 #' @examples
 #' arr <- matrix(c(0, 0, 1, 5, 10, 20), nrow = 2, ncol = 3)
 #' betamix.2d(arr)
-#'   [1] 10
 betamix.2d <- function(arr, mixnum = 2){
 
   x <- as.vector(arr)
@@ -72,8 +71,6 @@ betamix.2d <- function(arr, mixnum = 2){
 #' @examples
 #' arr <- array(c(0, 0, 1, 5, 10, 20), c(2,3,3))
 #' betamix.3d(arr)
-#' 
-#'
 betamix.3d <- function(arr, mixnum=2, n.cores=1, ...){
   
   dims <- dim(arr)
@@ -95,7 +92,6 @@ betamix.3d <- function(arr, mixnum=2, n.cores=1, ...){
 #' @examples
 #' arr <- array(c(0, 0, 1, 5, 10, 20), c(2,3,3,3))
 #' betamix.4d(arr)
-#' 
 betamix.4d <- function(arr, mixnum=2, n.cores=1, ...) {
   dims <- dim(arr)
   Z <- dims[3]

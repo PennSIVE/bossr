@@ -1,5 +1,12 @@
-# subset based on last dimension when dimensionality is not known
-# last_ind(arr, n) is equivalent to arr[,,n] and arr[,,,n] for 
+#' Subset based on last dimension
+#'
+#' The function returns the values of an array at a specific index along the last dimension of the array
+#'
+#' @param arr array to subset
+#' @param n index of last dimension to subset on
+#' @return array subsetted on last dimension at index `n`
+#' @examples
+#' last_ind(arr, 5)
 last_ind <- function(arr, n){
     nd <- length(dim(arr))
     # uncomment the following line if x could be a plain vector without dim
@@ -9,6 +16,15 @@ last_ind <- function(arr, n){
     do.call(`[`, c(list(arr), inds))
 }
 
+#' Get adjacent values
+#'
+#' The function returns values that span at least k cells over last dimension of the array
+#'
+#' @param arr array to subset
+#' @param k minimum number of adjacent values
+#' @return unique values that span at least k cells over last dimension of the array
+#' @examples
+#' get_adjacent(arr, 2)
 get_adjacent <- function(arr, k){
     #' returns values that span at least k cells over `d`, i.e. last dim. of arr
     dlength <- rev(dim(arr))[1]
@@ -20,13 +36,43 @@ get_adjacent <- function(arr, k){
         sort()
     adj.vals[-1] # skip 0
 }
+
+#' Get size of a value in an array
+#'
+#' The function returns the sum of elements in an array that match a specific value
+#'
+#' @param arr array
+#' @param label value to get size of
+#' @return sum of elements in array that match label
+#' @examples
+#' get_size(arr, 10)
 get_size <- function(arr, label) data.frame(sum(arr == label))
+
+#'Get centroid of a value in an array
+#'
+#' The function returns the centroid of elements in an array that match a specific value
+#'
+#' @param arr array
+#' @param label value to get centroid of
+#' @return centroid of elements in array that match label
+#' @examples
+#' get_centroid(arr, 10)
 get_centroid <- function(arr, label){
     centroid <- which(arr == label, arr.ind = TRUE) |>
         apply(2, mean) |> 
         as.list()
     centroid
 }
+
+#' Create dataframe for a value in an array
+#'
+#' The function creates a dataframe from the values of size and centroid of elements in an array that match a specific value
+#'
+#' @param arr array
+#' @param label value to make dataframe of
+#' @return dataframe of size and centroid of elements in array that match label
+#' @examples
+#' make_cell_df(arr, 10)
 make_cell_df <- function(arr, label) {
     if(label)
     list(label, get_size(arr, label), get_centroid(arr, label)) |> 
@@ -36,6 +82,15 @@ make_cell_df <- function(arr, label) {
     #dplyr::filter(size > size.thr)
 }
 
+#' Connected components in an array
+#'
+#' The function finds the connected components in an array and returns a labeled array of the same size
+#'
+#' @param roi_mask array to find connected components in
+#' @param r radius of the connected component filter
+#' @return labeled array of the same size
+#' @examples
+#' connect.components(arr, 10)
 #' @export
 connect.components <- function(roi_mask, r = 21){
     
@@ -45,13 +100,23 @@ connect.components <- function(roi_mask, r = 21){
     return(roi_labels)
 }
 
+#' Track connected components in 4D array
+#'
+#' The function tracks the connected components in a 4D array and returns a dataframe of the tracked components
+#'
+#' @param roi_labels labeled array of connected components
+#' @param k minimum number of adjacent frames for a component to be tracked
+#' @param size.thr minimum size of component to be tracked
+#' @return dataframe of tracked components
+#' @examples
+#' track.components(arr, 2, 10)
 #' @export
 track.components <- function(roi_labels, k = 2, size.thr = 10){
-    #' 1. subset array based on Z <- should this be done outside the function?
-    #' 2. split into list based on t
-    #' 3. take unique for each split (map)
-    #' 4. slide over window of 2 and reduce(intersection) -> unique.value
-    #' 5. save unique values 
+    # 1. subset array based on Z <- should this be done outside the function?
+    # 2. split into list based on t
+    # 3. take unique for each split (map)
+    # 4. slide over window of 2 and reduce(intersection) -> unique.value
+    # 5. save unique values 
     T <- dim(roi_labels)[4]
     Z <- dim(roi_labels)[3]
 
@@ -66,6 +131,14 @@ track.components <- function(roi_labels, k = 2, size.thr = 10){
     cell_df
 }
 
+#' Get number of connected components in each timepoint of 4D array
+#'
+#' The function returns the number of connected components in each timepoint of a 4D array
+#'
+#' @param cell_df dataframe of tracked components
+#' @return number of connected components in each timepoint
+#' @examples
+#' get.delta.n(cell_df)
 #' @export
 get.delta.n <- function(cell_df){
 
@@ -86,29 +159,36 @@ get.delta.n <- function(cell_df){
     added
 }
 
+#' Annotates data
+#'
+#' This function performs annotation on a data frame by sorting unique indexes and then filtering the dataframe based on X, Y, and Z coordinates. The function then checks for certain conditions and assigns new indexes to rows that meet those conditions.
+#'
+#' @param dat dataframe
+#' @param t 
+#' @return the annotated dataframe
 #' @export
-annot.dat <- function(dat, t){
-    index <- sort(unique(dat$index))
+annot.dat <- function(df, t){
+    index <- sort(unique(df$index))
   
     result.index <- c()
     for(i in index){
-      index.X <- dat[which(dat$index==i),"X"]
-      index.Y <- dat[which(dat$index==i),"Y"]
-      index.Z <- dat[which(dat$index==i),"Z"]
+      index.X <- dat[which(df$index==i),"X"]
+      index.Y <- dat[which(df$index==i),"Y"]
+      index.Z <- dat[which(df$index==i),"Z"]
 
-      new.dat <- dat %>% filter(X <= max(index.X)+30 & X >= min(index.X)-30) %>% 
+      new.df <- df %>% filter(X <= max(index.X)+30 & X >= min(index.X)-30) %>% 
         filter(Y <= max(index.Y)+30 & Y >= min(index.Y)-30) %>%
         filter(Z <= max(index.Z)+5 & Z >= min(index.Z)-5) 
 
-      if(length(unique(new.dat$index)) >1 && length(unique(new.dat$T)) == nrow(new.dat)){
-        print(new.dat)
+      if(length(unique(new.df$index)) >1 && length(unique(new.df$T)) == nrow(new.df)){
+        print(new.df)
         index.t <- c()
-        for(j in unique(new.dat$index)){
-          index.t <- c(index.t, dat[which(dat$index == j),"T"])
+        for(j in unique(new.df$index)){
+          index.t <- c(index.t, df[which(df$index == j),"T"])
         }
 
         if(length(index.t) == length(unique(index.t))){
-          result.index<- rbind(result.index, sort(unique(new.dat$index)))}
+          result.index<- rbind(result.index, sort(unique(new.df$index)))}
         else{
           print("Good")
         }
@@ -120,7 +200,7 @@ annot.dat <- function(dat, t){
     
     result.index <- result.index[which(duplicated(result.index)==FALSE),]
     for(i in 1:nrow(result.index)){
-      dat$index[which(dat$index==result.index[i,2])] <- result.index[i,1]
+      df$index[which(df$index==result.index[i,2])] <- result.index[i,1]
     }
-    return(dat)
+    return(df)
 }

@@ -1,9 +1,30 @@
+#' Threshold a 2D image
+#'
+#' The function applies a threshold to the 2D image and creates a binary mask where all the pixels 
+#' with values greater than the threshold are set to 1 and the rest are set to 0.
+#'
+#' @param img 2D array of image
+#' @param thr threshold value
+#' @return binary mask where pixels with values greater than the threshold are set to 1 and all others are set to 0
+#' @examples
+#' threshold.2d(img, 150)
 threshold.2d <- function(img, thr){
     roi_mask <- (img > thr) |> apply(2, as.numeric)
     roi_mask[is.na(roi_mask)] <- 0 # override NA (cause: 0-everywhere slice)
     return(roi_mask)
 }
 
+#' Threshold a 3D image
+#'
+#' The function applies a threshold to each slice of the 3D image using threshold.2d function, 
+#' creating a 3D binary mask where all the pixels with values greater than the threshold in each slice are set to 1 and the rest are set to 0.
+#'
+#' @param img 3D array of image
+#' @param thr vector of threshold values (one for each slice of the image)
+#' @param n.cores number of cores to use for parallel processing
+#' @return 3D binary mask
+#' @examples
+#' threshold.3d(img, c(120, 130, 140), 2)
 threshold.3d <- function(img, thr, n.cores=1, ...){
     dims = dim(img)
     Z = dims[3]
@@ -12,6 +33,17 @@ threshold.3d <- function(img, thr, n.cores=1, ...){
     return(mask)
 }
 
+#' Threshold a 4D image
+#'
+#' The function applies a threshold to each slice and time point of the 4D image using threshold.2d function, 
+#' creating a 4D binary mask where all the pixels with values greater than the threshold in each slice and time point are set to 1 and the rest are set to 0.
+#'
+#' @param img 4D array of image
+#' @param thr matrix of threshold values (one for each slice and time point of the image)
+#' @param n.cores number of cores to use for parallel processing
+#' @return 4D binary mask
+#' @examples
+#' threshold.4d(img, matrix(c(120, 130, 140, 130, 140, 150), ncol = 2), 2)
 threshold.4d <- function(img, thr, n.cores=1, ...){
     dims <- dim(img)
     Z <- dims[3]
@@ -32,6 +64,20 @@ threshold.4d <- function(img, thr, n.cores=1, ...){
     return(mask)
 }
 
+#' Threshold an image
+#'
+#' The function takes an image and a threshold value and applies the appropriate threshold function 
+#' (threshold.2d, threshold.3d, or threshold.4d) based on the dimensionality of the image. 
+#' It also checks that the threshold value has the correct dimensionality and length to match the image.
+#'
+#' @param img image to be thresholded (2D, 3D, or 4D array)
+#' @param thr threshold value (scalar, vector, or matrix)
+#' @param n.cores number of cores to use for parallel processing (only used in threshold.3d and threshold.4d)
+#' @return binary mask of thresholded image (same dimensionality as input image)
+#' @examples
+#' threshold.img(img, 150)
+#' threshold.img(img, c(120, 130, 140), 2)
+#' threshold.img(img, matrix(c(120, 130, 140, 130, 140, 150), ncol = 2), 2)
 #' @export
 threshold.img <- function(img, thr, n.cores=1, ...){
   ndim.img <- length(dim(img))
