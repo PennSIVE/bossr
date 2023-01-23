@@ -123,7 +123,7 @@ track.components <- function(roi_labels, k = 2, size.thr = 10){
     # TODO: abstract pattern for z or t
     T.adj.vals <- get_adjacent(roi_labels, k)
     cell_df <- purrr::map(1:T, ~ get_adjacent(roi_labels[,,,.x], k)) |>
-        purrr::map(~intersect(T.adj.vals)) |>
+        purrr::map(~intersect(.x, T.adj.vals)) |>
         purrr::imap(~ if(length(.x) != 0) make_cell_df(roi_labels[,,,.y], .x) |> cbind(t = .y)) |> 
         dplyr::bind_rows() |>
         dplyr::filter(size > size.thr)
