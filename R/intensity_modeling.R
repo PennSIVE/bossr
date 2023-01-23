@@ -11,10 +11,15 @@
 betamix.2d <- function(arr, mixnum = 2){
 
   x <- as.vector(arr)
-  min.intensity <- quantile(x, probs = 0.99) |> unname()
   if (max(x) == 0){
     warning("No signal in slice: All values 0. Returning `NA`")
     return(NA)
+  }
+  q = 0.99
+  min.intensity <- quantile(x, probs = q) 
+  while(! any(x > min.intensity)){
+    q = q - 0.01
+    min.intensity <- quantile(x, probs = q)
   }
   x <- x [x > min.intensity]
   original.scale.x <- range(x)
