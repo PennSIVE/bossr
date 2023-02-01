@@ -159,7 +159,7 @@ get.delta.n <- function(cell_df){
     added
 }
 
-#' Annotates data
+#' Postprocceses a data.frame that is the result of track.components
 #'
 #' This function performs annotation on a data frame by sorting unique indexes and then filtering the dataframe based on X, Y, and Z coordinates. The function then checks for certain conditions and assigns new indexes to rows that meet those conditions.
 #'
@@ -167,40 +167,56 @@ get.delta.n <- function(cell_df){
 #' @param t 
 #' @return the annotated dataframe
 #' @export
-annotate.df <- function(df, t){
-    index <- sort(unique(df$index))
+post.process.df <- function(df, t){
   
-    result.index <- c()
-    for(i in index){
-      index.X <- df[which(df$index==i),"x"]
-      index.Y <- df[which(df$index==i),"y"]
-      index.Z <- df[which(df$index==i),"z"]
-
-      new.df <- df |> dplyr::filter(x <= max(index.X)+30 & x>= min(index.X)-30) |> 
-        dplyr::filter(Y <= max(index.Y)+30 & Y >= min(index.Y)-30) |>
-        dplyr::filter(Z <= max(index.Z)+5 & Z >= min(index.Z)-5) 
-
-      if(length(unique(new.df$index)) >1 && length(unique(new.df$T)) == nrow(new.df)){
-        print(new.df)
-        index.t <- c()
-        for(j in unique(new.df$index)){
-          index.t <- c(index.t, df[which(df$index == j),"t"])
-        }
-
-        if(length(index.t) == length(unique(index.t))){
-          result.index<- rbind(result.index, sort(unique(new.df$index)))}
-        else{
-          print("Good")
-        }
-
-      }else{
-        print("Good")
+  # Create a vector index that consists of unique sorted values of the "index" column in df
+  index <- sort(unique(df$index))
+  
+  # Initialize an empty vector result.index to store the result
+  result.index <- c()
+  
+  # Loop over the values in index
+  for(i in index){
+    
+    # Create vectors index.X, index.Y, index.Z, each consisting of the corresponding column values in df for the current value of i
+    index.X <- df[which(df$index==i),"x"]
+    index.Y <- df[which(df$index==i),"y"]
+    index.Z <- df[which(df$index==i),"z"]
+    
+    # Filter df using dplyr to create new.df with rows that meet the criteria in the three filter statements
+    new.df <- df |> dplyr::filter(x <= max(index.X)+30 & x>= min(index.X)-30) |> 
+      dplyr::filter(Y <= max(index.Y)+30 & Y >= min(index.Y)-30) |>
+      dplyr::filter(Z <= max(index.Z)+5 & Z >= min(index.Z)-5) 
+    
+    # Check if the length of unique values of the "index" column in new.df is greater than 1 and equal to the number of rows in new.df 
+    if(length(unique(new.df$index)) >1 && length(unique(new.df$T)) == nrow(new.df)){
+      
+      # Initialize an empty vector index.t
+      index.t <- c()
+      
+      # Loop over the unique values of the "index" column in new.df
+      for(j in unique(new.df$index)){
+        # Append the corresponding "t" column values in df to index.t for the current value of j
+        index.t <- c(index.t, df[which(df$index == j),"t"])
+      }
+      
+      # Check if the length of index.t is equal to the length of unique values of index.t
+      if(length(index.t) == length(unique(index.t))){
+        # If true, add the sorted unique values of the "index" column in new.df to result.index
+        result.index<- rbind(result.index, sort(unique(new.df$index)))
       }
     }
-
-    result.index <- result.index[which(duplicated(result.index)==FALSE),]
-    for(i in 1:nrow(result.index)){
-      df$index[which(df$index==result.index[i,2])] <- result.index[i,1]
-    }
-    return(df)
+  }
+  
+  # Remove duplicates from result.index
+  result.index <- result.index[which(duplicated(result.index)==FALSE),]
+  
+  # Replace the "index" column values in df with the corresponding values in result.index
+  for(i in 1:nrow(result.index)){
+    df$index[which(df$index==result.index[i,2])] <- result.index[i,1]
+  }
+  
+  # Return df
+  return(df)
 }
+
