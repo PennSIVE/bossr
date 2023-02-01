@@ -10,6 +10,7 @@
 median.filtering.3d <- function(roi_mask, r = 10){
   k <- mmand::shapeKernel(c(r,r,2), type="box")
   roi_mask_filtered <- mmand::medianFilter(roi_mask, k)
+  roi_mask_filted[which(mask_filtered == 0.5, arr.ind = TRUE)] <- 1 # correct cases where median == 0.5
   return(roi_mask_filtered)
 }
 
