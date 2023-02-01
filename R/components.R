@@ -189,7 +189,7 @@ post.process.df <- function(df, t){
       dplyr::filter(Z <= max(index.Z)+5 & Z >= min(index.Z)-5) 
     
     # Check if the length of unique values of the "index" column in new.df is greater than 1 and equal to the number of rows in new.df 
-    if(length(unique(new.df$index)) >1 && length(unique(new.df$T)) == nrow(new.df)){
+    if(length(unique(new.df$index)) >1 && length(unique(new.df$t)) == nrow(new.df)){
       
       # Initialize an empty vector index.t
       index.t <- c()
