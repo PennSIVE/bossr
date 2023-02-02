@@ -5,6 +5,7 @@ title: "bossr"
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
+  cache = TRUE,
   comment = "#>"
 )
 ```
@@ -22,8 +23,9 @@ n.cores = 4
 system.time(thr <- bossr::betamix.img(oligo, n.cores = 4))
 ```
 
-```{r, include=FALSE}}
+```{r, include=FALSE, eval=FALSE}
 # TODO: Delete this chunk once testing is successful
+# thr <- readRDS(here::here('tmp/thr.rds'))
 saveRDS(thr, here::here('tmp/thr.rds'))
 hist(thr)
 ```
@@ -32,102 +34,53 @@ hist(thr)
 system.time(mask <- bossr::threshold.img(oligo, thr, n.cores = 4))
 ```
 
-```{r, include=FALSE}
+```{r, include=FALSE, eval=FALSE}
 # TODO: Delete this chunk once testing is successful
+mask <- readRDS(here::here('tmp/mask.rds'))
 saveRDS(mask, here::here('tmp/mask.rds'))
 mask |> as.vector() |> table()
 ```
 
-```{r median_filtering}
+```{r median.filtering}
 system.time(mask_filtered <- bossr::median.filtering(mask))
 ```
 
-```{r, include=FALSE}
+```{r, include=FALSE, eval=FALSE}
 saveRDS(mask_filtered, here::here('tmp/mask_filtered.rds'))
 mask_filtered |> as.vector() |> table()
 ```
 
-```{r connect_components}
+```{r connect.components}
 system.time(labels <- bossr::connect.components(mask_filtered))
 ```
+
 ```{r}
 labels |> c() |> unique()
 ```
 
-```{r, include=FALSE}
+```{r, include=FALSE, eval=FALSE}
 saveRDS(labels, here::here('tmp/labels.rds'))
 ```
 
-
-```{r cell_df}
-# TODO: fix
-# each index should appear on at least two t, no?
-cell_df <- bossr::track.components(labels)
+```{r, include=FALSE, eval=FALSE}
+cell_df <- readRDS(here::here('tmp/cell_df.rds'))
+saveRDS(cell_df, here::here('tmp/cell_df.rds'))
 ```
 
 
 ```{r cell_df}
+cell_df <- bossr::track.components(labels) |> 
+  bossr::post.process.df()
+```
+
+```{r annotate.df}
 # TODO: make this one function that returns a summary
 # TODO: change name of function
-bossr::get.delta.n(cell_df)
+bossr::annotate.df(cell_df, t = 8)
 ```
+
 
 ```{r}
-bossr::post.process.df(cell_df, t = 4)
-```
-
-```{r annot_dat}
-# set up env
-temp_env = new.env()
-attach(temp_env)
-# params
-df = cell_df
-t = 1
-#annotate.df <- function(df, t){
-    index <- sort(unique(df$index))
-  
-    result.index <- c()
-    # 
-    i = index[1]
-    #
-    for(i in index){
-      index.X <- df[which(df$index==i),"x"]
-      index.Y <- df[which(df$index==i),"y"]
-      index.Z <- df[which(df$index==i),"z"]
-
-      new.df <- df |> 
-        dplyr::filter(x <= max(index.X)+30 & x>= min(index.X)-30) |> 
-        dplyr::filter(y <= max(index.Y)+30 & y >= min(index.Y)-30) |>
-        dplyr::filter(z <= max(index.Z)+5 & z >= min(index.Z)-5) 
-      
-      if(length(unique(new.df$index)) > 1 && length(unique(new.df$t)) == nrow(new.df)){
-        
-        index.t <- c()
-        for(j in unique(new.df$index)){
-          index.t <- c(index.t, df[which(df$index == j),"t"])
-        }
-
-        if(length(index.t) == length(unique(index.t))){
-          result.index<- rbind(result.index, sort(unique(new.df$index)))}
-        
-
-      }
-    }
-
-    result.index <- result.index[which(duplicated(result.index)==FALSE),]
-    if (!is.null(result.index))}
-      for(i in seq_len(result.index)){
-      
-        df$index[which(df$index==result.index[i,2])] <- result.index[i,1]
-      }
-    }
-   
-    return(df)
-}
-
-
-```
-
-```{r}
-# plotting
+# make overlay
+print("Add Overlay")
 ```
