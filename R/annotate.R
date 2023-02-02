@@ -57,9 +57,58 @@ annotate.df <- function(df, t){
              survivor = all.survival.count)
 }
 
-# TODO: add plotting function
+#' Make Overlay
+#' 
+#' This function creates an overlay by drawing boxes around centroids of cells in a dataframe, at a specified timepoint, as well as cells in adjacent timepoints.
+#' 
+#' @param cell_df A dataframe containing the cell data, with columns for x, y, z, t, and index
+#' @param dims A numeric vector of length 4, representing the dimensions of the image in x, y, z, and t
+#' @param t An integer representing the timepoint of interest
+#' 
+#' @return A 3-dimensional binary array representing the overlay
+#' 
+#' @examples
+#' \dontrun{
+#' make.overlay(cell_df, dims, t)
+#' }
+#' 
+#' @export
+make.overlay <- function(cell_df, dims, t){
+  
+  # draw box around a cell's centroid
+  draw.box <- function(row){
+    box <- array(0, dims[1:3])
+    # handle edge cases
+    X.ROI <- max(1,(row$x-5)):min(dims[1],(row$x+5))
+    Y.ROI <- max(1,(row$y-5)):min(dims[2],(row$y+5))
+    Z.ROI <- max(1,(row$z-3)):(row$z+3)
+    # add color
+    box[X.ROI, Y.ROI, Z.ROI] <- TRUE
+    return(box)
+  }
+  
+  if(! t %in% seq_len(dims[4])) stop("t is outside of the specified dimensions.")
+  ## get cells at timepoint t
+  df_t <- cell_df |>
+    dplyr::filter(t == .env$t) #.env$t is the parameter passed to the function
+  
+  index_t <- unique(df_t$index)
+  
+  ## search cells in adjacent timepoints
+  # get adjacent timepoints if they exist (handles edge cases when t=1 and t=T)
+  t_adj <- intersect(c(t-1, t+1), 
+                     seq_len(dims[4]))
+  # get the cells at the adj
+  df_t_adj <- df |>
+    dplyr::filter(t %in% t_adj, 
+                  index %in% index_t) 
+  
+  ## combine data.frames then make mask
+  df_t_all <- rbind(df_t, df_t_adj) 
+  
+  df_t_all |>
+    split(seq_len(nrow(df_t_all))) |> # split data.frame into a list of rows
+    purrr::map(draw.box) |> # draw box for each row
+    purrr::reduce(pmax) # take 'union' 
+}
 
-
-
-
-# TODO: add make.overlay
