@@ -4,12 +4,10 @@
 \alias{post.process.df}
 \title{Postprocceses a data.frame that is the result of track.components}
 \usage{
-post.process.df(df, t)
+post.process.df(df)
 }
 \arguments{
 \item{df}{dataframe}
-
-\item{t}{}
 }
 \value{
 the annotated dataframe

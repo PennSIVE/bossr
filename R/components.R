@@ -131,43 +131,14 @@ track.components <- function(roi_labels, k = 2, size.thr = 10){
   cell_df
 }
 
-#' Get number of connected components in each timepoint of 4D array
-#'
-#' The function returns the number of connected components in each timepoint of a 4D array
-#'
-#' @param cell_df dataframe of tracked components
-#' @return number of connected components in each timepoint
-#' @examples
-#' get.delta.n(cell_df)
-#' @export
-get.delta.n <- function(cell_df){
-
-    # get number of cells in each timepoint
-    ncells <- cell_df |> 
-        split(cell_df$t) |>
-        purrr::map_int(~nrow(.x))
-
-    ## assign 0s for timepoints without cells
-    Ts <- names(ncells) |> as.numeric()
-    max_t <- max(Ts)
-    diff <- setdiff(1:max_t, Ts)
-    ncells <- c(ncells, rep(0, length(diff))) |> setNames(c(names(ncells), diff))
-
-    # sort by t
-    ncells <- ncells[order(as.numeric(names(ncells)))]
-    added <- slider::slide_int(ncells, ~.x[2] - .x[1], .before=1)
-    added
-}
-
 #' Postprocceses a data.frame that is the result of track.components
 #'
 #' This function performs annotation on a data frame by sorting unique indexes and then filtering the dataframe based on X, Y, and Z coordinates. The function then checks for certain conditions and assigns new indexes to rows that meet those conditions.
 #'
 #' @param df dataframe
-#' @param t 
 #' @return the annotated dataframe
 #' @export
-post.process.df <- function(df, t){
+post.process.df <- function(df){
   
   # Create a vector index that consists of unique sorted values of the "index" column in df
   index <- sort(unique(df$index))
@@ -185,8 +156,8 @@ post.process.df <- function(df, t){
     
     # Filter df using dplyr to create new.df with rows that meet the criteria in the three filter statements
     new.df <- df |> dplyr::filter(x <= max(index.X)+30 & x>= min(index.X)-30) |> 
-      dplyr::filter(Y <= max(index.Y)+30 & Y >= min(index.Y)-30) |>
-      dplyr::filter(Z <= max(index.Z)+5 & Z >= min(index.Z)-5) 
+      dplyr::filter(y <= max(index.Y)+30 & y >= min(index.Y)-30) |>
+      dplyr::filter(z <= max(index.Z)+5 & z >= min(index.Z)-5) 
     
     # Check if the length of unique values of the "index" column in new.df is greater than 1 and equal to the number of rows in new.df 
     if(length(unique(new.df$index)) >1 && length(unique(new.df$t)) == nrow(new.df)){
@@ -211,9 +182,32 @@ post.process.df <- function(df, t){
   # Remove duplicates from result.index
   result.index <- result.index[which(duplicated(result.index)==FALSE),]
   
-  # Replace the "index" column values in df with the corresponding values in result.index
-  for(i in 1:nrow(result.index)){
-    df$index[which(df$index==result.index[i,2])] <- result.index[i,1]
+  # Check if post-processing was needed
+  if (!is.null(result.index)){
+    # Replace the "index" column values in df with the corresponding values in result.index
+    for(i in 1:nrow(result.index)){
+      df$index[which(df$index==result.index[i,2])] <- result.index[i,1]
+    }
+  }
+  
+  for(i in df$index){
+    
+    cell.df <- df %>% filter(index ==i)
+    
+    if(length(unique(cell.df$t)) != (max(cell.df$t) - min(cell.df$t) +1)){
+      sequence.T <- min(cell.df$t):max(cell.df$t)
+      missing.T <- sequence.T[which(! sequence.T %in% cell.df$t)]
+      
+      impute.rows <- c()   
+      for(tt in missing.T){ 
+        impute.row <- cbind(i, mean(cell.df$size), mean(cell.df$x), mean(cell.df$y), mean(cell.df$z), tt)
+        impute.rows <- rbind(impute.rows, impute.row)
+      }
+      
+      colnames(impute.rows) <- colnames(df)
+      df <- rbind(df, impute.rows)
+      
+    }
   }
   
   # Return df
