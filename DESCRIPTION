@@ -20,7 +20,10 @@ Imports:
     scales, 
     oro.nifti, 
     mmand, 
-    parallel
+    parallel,
+    dplyr,
+    purrr,
+    slider
 Suggests:
     bossrdata,
     rmarkdown,
