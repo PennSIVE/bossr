@@ -1,5 +1,5 @@
 ---
-title: "bossr"
+title: "Introduction to the bossr pipeline"
 ---
 
 ```{r, include = FALSE}
@@ -10,7 +10,8 @@ knitr::opts_chunk$set(
 )
 ```
 
-Install the companion package to follow along the vignette: `install.packages('bossrdata', repos = 'https://pennsive.github.io/drat', type='source')`
+Install the companion package to follow along the vignette: `install.packages('bossrdata', repos = 'https://pennsive.github.io/drat', type='source')`. 
+
 
 ```{r setup}
 library(bossr)
@@ -19,63 +20,47 @@ data(oligo)
 n.cores = 4
 ```
 
-```{r betamix.img}
-system.time(thr <- bossr::betamix_img(oligo, n.cores = 4))
+The oligo dataset in bossrdata consists of a small 4D segment taken from oligodentrocyte-stained images (TODO: update to correct language).
+
+```{r oligo}
+# Oligo is a 4D array
+str(oligo)
 ```
 
-```{r, include=FALSE, eval=FALSE}
-# TODO: Delete this chunk once testing is successful
-# thr <- readRDS(here::here('tmp/thr.rds'))
-saveRDS(thr, here::here('tmp/thr.rds'))
-hist(thr)
+The array functions in bossr are easily parallelizable and detect dimensionality of the input array. `bossr::betamix_img()` produces a threshold for each slice of an array. 
+
+```{r betamix.img}
+thr <- bossr::betamix_img(oligo, n.cores = 4)
 ```
+
+The resulting threshold can be applied with `bossr::threshold_img()`, which produces a mask.
 
 ```{r threshold}
-system.time(mask <- bossr::threshold_img(oligo, thr, n.cores = 4))
+mask <- bossr::threshold_img(oligo, thr, n.cores = 4)
 ```
 
-```{r, include=FALSE, eval=FALSE}
-# TODO: Delete this chunk once testing is successful
-mask <- readRDS(here::here('tmp/mask.rds'))
-saveRDS(mask, here::here('tmp/mask.rds'))
-mask |> as.vector() |> table()
-```
+After thresholding, a `bossr::median_filtering()` can be applied to reduce noise in the mask. 
 
-```{r median.filtering}
+```{r median_filtering}
 system.time(mask_filtered <- bossr::median_filtering(mask))
 ```
 
-```{r, include=FALSE, eval=FALSE}
-saveRDS(mask_filtered, here::here('tmp/mask_filtered.rds'))
-mask_filtered |> as.vector() |> table()
+And once the mask has been filtered, `bossr::connect_components()` will detect individual cells via a connected components algorithm. This operation will result in distinct labels being produced.
+
+```{r connect_components}
+system.time(labels <- bossr::connect_components(mask_filtered))
 ```
 
-```{r connect.components}
-system.time(labels <- bossr::connect.components(mask_filtered))
-```
-
-```{r}
-labels |> c() |> unique()
-```
-
-```{r, include=FALSE, eval=FALSE}
-saveRDS(labels, here::here('tmp/labels.rds'))
-```
-
-```{r, include=FALSE, eval=FALSE}
-cell_df <- readRDS(here::here('tmp/cell_df.rds'))
-saveRDS(cell_df, here::here('tmp/cell_df.rds'))
-```
-
+To produce a description of the location and size of each cell, we use `bossr::track_components()` followed by `bossr::post_process_df()` to perform imputation.
 
 ```{r cell_df}
 cell_df <- bossr::track_components(labels) |> 
   bossr::post_process_df()
 ```
 
-```{r annotate.df}
-# TODO: make this one function that returns a summary
-# TODO: change name of function
+A summary of how cell counts change over time can be produced with `bossr::annotate_df()`
+
+```{r annotate_df}
 bossr::annotate_df(cell_df, t = 8)
 ```
 
