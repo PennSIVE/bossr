@@ -20,7 +20,7 @@ n.cores = 4
 ```
 
 ```{r betamix.img}
-system.time(thr <- bossr::betamix.img(oligo, n.cores = 4))
+system.time(thr <- bossr::betamix_img(oligo, n.cores = 4))
 ```
 
 ```{r, include=FALSE, eval=FALSE}
@@ -31,7 +31,7 @@ hist(thr)
 ```
 
 ```{r threshold}
-system.time(mask <- bossr::threshold.img(oligo, thr, n.cores = 4))
+system.time(mask <- bossr::threshold_img(oligo, thr, n.cores = 4))
 ```
 
 ```{r, include=FALSE, eval=FALSE}
@@ -42,7 +42,7 @@ mask |> as.vector() |> table()
 ```
 
 ```{r median.filtering}
-system.time(mask_filtered <- bossr::median.filtering(mask))
+system.time(mask_filtered <- bossr::median_filtering(mask))
 ```
 
 ```{r, include=FALSE, eval=FALSE}
@@ -69,19 +69,19 @@ saveRDS(cell_df, here::here('tmp/cell_df.rds'))
 
 
 ```{r cell_df}
-cell_df <- bossr::track.components(labels) |> 
-  bossr::post.process.df()
+cell_df <- bossr::track_components(labels) |> 
+  bossr::post_process_df()
 ```
 
 ```{r annotate.df}
 # TODO: make this one function that returns a summary
 # TODO: change name of function
-bossr::annotate.df(cell_df, t = 8)
+bossr::annotate_df(cell_df, t = 8)
 ```
 
 
 ```{r, eval=FALSE, include=FALSE, echo=FALSE}
-overlay <- bossr::make.overlay(cell_df, dim(oligo), t = 2) |> as.nifti()
+overlay <- bossr::make_overlay(cell_df, dim(oligo), t = 2) |> as.nifti()
 nifti_t <- as.nifti(oligo[,,,3])
 overlay.nifti(nifti_t,
               overlay,

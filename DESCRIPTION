@@ -8,7 +8,7 @@ Authors@R:
         person("Eunchan", "Bae", , "ecbae@pennmedicine.upenn.edu", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0003-2941-3717"))
     )
-Description: Functions for automated segmentation of oligodendrocytes in 2D, 3D and 4D arrays. Exported functions of 'bossR' detect dimensionality
+Description: Functions for automated segmentation of oligodendrocytes in 2D, 3D and 4D arrays. Exported functions of 'bossr' detect dimensionality
     of input arrays and call internal, parallellized functions for a user-friendly experience. A companion data package 'bossrdata' is available
     to enable users to follow along the examples in the vignettes. See the vignettes for more information on how to install 'bossrdata'.
 License: MIT + file LICENSE
