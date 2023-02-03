@@ -22,22 +22,22 @@
     <loc>https://pennsive.github.io/bossr/index.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/annotate.df.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/annotate_df.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/betamix.2d.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/betamix_2d.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/betamix.3d.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/betamix_3d.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/betamix.4d.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/betamix_4d.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/betamix.img.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/betamix_img.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/connect.components.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/connect_components.html</loc>
   </url>
   <url>
     <loc>https://pennsive.github.io/bossr/reference/get_centroid.html</loc>
@@ -58,36 +58,36 @@
     <loc>https://pennsive.github.io/bossr/reference/list2nifti.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/make.overlay.html</loc>
-  </url>
-  <url>
     <loc>https://pennsive.github.io/bossr/reference/make_cell_df.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/median.filtering.3d.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/make_overlay.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/median.filtering.4d.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/median_filtering.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/median.filtering.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/median_filtering_3d.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/post.process.df.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/median_filtering_4d.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/threshold.2d.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/post_process_df.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/threshold.3d.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/threshold_2d.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/threshold.4d.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/threshold_3d.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/threshold.img.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/threshold_4d.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/track.components.html</loc>
+    <loc>https://pennsive.github.io/bossr/reference/threshold_img.html</loc>
+  </url>
+  <url>
+    <loc>https://pennsive.github.io/bossr/reference/track_components.html</loc>
   </url>
 </urlset>
