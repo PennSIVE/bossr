@@ -17,6 +17,3 @@ dataframe of size and centroid of elements in array that match label
 \description{
 The function creates a dataframe from the values of size and centroid of elements in an array that match a specific value
 }
-\examples{
-make_cell_df(arr, 10)
-}

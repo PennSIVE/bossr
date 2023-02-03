@@ -5,8 +5,6 @@
 #' @param arr array to subset
 #' @param n index of last dimension to subset on
 #' @return array subsetted on last dimension at index `n`
-#' @examples
-#' last_ind(arr, 5)
 last_ind <- function(arr, n){
     nd <- length(dim(arr))
     # uncomment the following line if x could be a plain vector without dim
@@ -23,8 +21,6 @@ last_ind <- function(arr, n){
 #' @param arr array to subset
 #' @param k minimum number of adjacent values
 #' @return unique values that span at least k cells over last dimension of the array
-#' @examples
-#' get_k_long_labels(arr, 2)
 get_k_long_labels <- function(arr, k){
 
     dlength <- rev(dim(arr))[1]
@@ -44,8 +40,6 @@ get_k_long_labels <- function(arr, k){
 #' @param arr array
 #' @param label value to get size of
 #' @return sum of elements in array that match label
-#' @examples
-#' get_size(arr, 10)
 get_size <- function(arr, label) data.frame(sum(arr == label, na.rm = TRUE))
 
 #'Get centroid of a value in an array
@@ -55,8 +49,6 @@ get_size <- function(arr, label) data.frame(sum(arr == label, na.rm = TRUE))
 #' @param arr array
 #' @param label value to get centroid of
 #' @return centroid of elements in array that match label
-#' @examples
-#' get_centroid(arr, 10)
 get_centroid <- function(arr, label){
     centroid <- which(arr == label, arr.ind = TRUE) |>
         apply(2, mean) |> 
@@ -71,8 +63,6 @@ get_centroid <- function(arr, label){
 #' @param arr array
 #' @param label value to make dataframe of
 #' @return dataframe of size and centroid of elements in array that match label
-#' @examples
-#' make_cell_df(arr, 10)
 make_cell_df <- function(arr, label) {
     list(label, get_size(arr, label), get_centroid(arr, label)) |> 
     purrr::reduce(c) |>
@@ -87,10 +77,8 @@ make_cell_df <- function(arr, label) {
 #' @param roi_mask array to find connected components in
 #' @param r radius of the connected component filter
 #' @return labeled array of the same size
-#' @examples
-#' connect.components(arr, 10)
 #' @export
-connect.components <- function(roi_mask, r = 21){
+connect_components <- function(roi_mask, r = 21){
     
     k <- mmand::shapeKernel(c(r,r,3,3), type='box')
     roi_labels <- mmand::components(roi_mask, k)
@@ -106,10 +94,8 @@ connect.components <- function(roi_mask, r = 21){
 #' @param k minimum number of adjacent frames for a component to be tracked
 #' @param size.thr minimum size of component to be tracked
 #' @return dataframe of tracked components
-#' @examples
-#' track.components(arr, 2, 10)
 #' @export
-track.components <- function(roi_labels, k = 2, size.thr = 10){
+track_components <- function(roi_labels, k = 2, size.thr = 10){
   # 1. subset array based on Z <- should this be done outside the function?
   # 2. split into list based on t
   # 3. take unique for each split (map)
@@ -131,14 +117,14 @@ track.components <- function(roi_labels, k = 2, size.thr = 10){
   cell_df
 }
 
-#' Postprocceses a data.frame that is the result of track.components
+#' Postprocceses a data.frame that is the result of track_components
 #'
 #' This function performs annotation on a data frame by sorting unique indexes and then filtering the dataframe based on X, Y, and Z coordinates. The function then checks for certain conditions and assigns new indexes to rows that meet those conditions.
 #'
 #' @param df dataframe
 #' @return the annotated dataframe
 #' @export
-post.process.df <- function(df){
+post_process_df <- function(df){
   
   # Create a vector index that consists of unique sorted values of the "index" column in df
   index <- sort(unique(df$index))

@@ -17,6 +17,3 @@ unique values that span at least k cells over last dimension of the array
 \description{
 The function returns values that span at least k cells over last dimension of the array
 }
-\examples{
-get_k_long_labels(arr, 2)
-}

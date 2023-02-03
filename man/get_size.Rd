@@ -17,6 +17,3 @@ sum of elements in array that match label
 \description{
 The function returns the sum of elements in an array that match a specific value
 }
-\examples{
-get_size(arr, 10)
-}

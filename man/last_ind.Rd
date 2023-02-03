@@ -17,6 +17,3 @@ array subsetted on last dimension at index \code{n}
 \description{
 The function returns the values of an array at a specific index along the last dimension of the array
 }
-\examples{
-last_ind(arr, 5)
-}

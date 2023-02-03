@@ -16,7 +16,7 @@
 #' @return A dataframe with 4 columns: count, addition, deletion, and survivor.
 #' @import dplyr
 #' @export
-annotate.df <- function(df, t){
+annotate_df <- function(df, t){
   
   
   # Count
@@ -65,18 +65,12 @@ annotate.df <- function(df, t){
 #' @param dims A numeric vector of length 4, representing the dimensions of the image in x, y, z, and t
 #' @param t An integer representing the timepoint of interest
 #' 
-#' @return A 3-dimensional binary array representing the overlay
-#' 
-#' @examples
-#' \dontrun{
-#' make.overlay(cell_df, dims, t)
-#' }
-#' 
+#' @return A 3-dimensional binary array representing the overlay 
 #' @export
-make.overlay <- function(cell_df, dims, t){
+make_overlay <- function(cell_df, dims, t){
   
   # draw box around a cell's centroid
-  draw.box <- function(row){
+  draw_box <- function(row){
     box <- array(0, dims[1:3])
     # handle edge cases
     X.ROI <- max(1,(row$x-5)):min(dims[1],(row$x+5))
@@ -108,7 +102,7 @@ make.overlay <- function(cell_df, dims, t){
   
   df_t_all |>
     split(seq_len(nrow(df_t_all))) |> # split data.frame into a list of rows
-    purrr::map(draw.box) |> # draw box for each row
+    purrr::map(draw_box) |> # draw box for each row
     purrr::reduce(pmax) # take 'union' 
 }
 

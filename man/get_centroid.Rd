@@ -17,6 +17,3 @@ centroid of elements in array that match label
 \description{
 The function returns the centroid of elements in an array that match a specific value
 }
-\examples{
-get_centroid(arr, 10)
-}
