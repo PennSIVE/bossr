@@ -80,7 +80,15 @@ bossr::annotate.df(cell_df, t = 8)
 ```
 
 
-```{r}
-# make overlay
-print("Add Overlay")
+```{r, eval=FALSE, include=FALSE, echo=FALSE}
+overlay <- bossr::make.overlay(cell_df, dim(oligo), t = 2) |> as.nifti()
+nifti_t <- as.nifti(oligo[,,,3])
+overlay.nifti(nifti_t,
+              overlay,
+              #col.y = 
+              z = 42,
+              plot.type = 'single')
+
+
 ```
+
