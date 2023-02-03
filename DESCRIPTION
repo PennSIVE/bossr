@@ -30,3 +30,5 @@ Suggests:
     testthat (>= 3.0.0)
 Additional_repositories: https://pennsive.github.io/drat
 Config/testthat/edition: 3
+URL: https://vgonzenbach.github.io/bossr/,
+    https://pennsive.github.io/bossr/
