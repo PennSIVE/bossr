@@ -6,6 +6,7 @@
 #' @param img 2D array of image
 #' @param thr threshold value
 #' @return binary mask where pixels with values greater than the threshold are set to 1 and all others are set to 0
+#' @noRd
 threshold_2d <- function(img, thr){
     roi_mask <- (img > thr) |> apply(2, as.numeric)
     roi_mask[is.na(roi_mask)] <- 0 # override NA (cause: 0-everywhere slice)
@@ -21,6 +22,7 @@ threshold_2d <- function(img, thr){
 #' @param thr vector of threshold values (one for each slice of the image)
 #' @param n.cores number of cores to use for parallel processing
 #' @return 3D binary mask
+#' @noRd
 threshold_3d <- function(img, thr, n.cores=1, ...){
     dims = dim(img)
     Z = dims[3]
@@ -38,6 +40,7 @@ threshold_3d <- function(img, thr, n.cores=1, ...){
 #' @param thr matrix of threshold values (one for each slice and time point of the image)
 #' @param n.cores number of cores to use for parallel processing
 #' @return 4D binary mask
+#' @noRd
 threshold_4d <- function(img, thr, n.cores=1, ...){
     dims <- dim(img)
     Z <- dims[3]

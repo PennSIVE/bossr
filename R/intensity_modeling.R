@@ -5,6 +5,7 @@
 #' @param arr A 2D array of values
 #' @param mixnum The number of mixture components to use in the beta mixture model. Default is 2.
 #' @return A threshold value
+#' @noRd
 betamix_2d <- function(arr, mixnum = 2){
 
   x <- as.vector(arr)
@@ -70,6 +71,7 @@ betamix_2d <- function(arr, mixnum = 2){
 #' @param n.cores number of cores used in parallel computing. Default is 1.
 #' @param ... additional parameters passed to `mclapply`
 #' @return A threshold value
+#' @noRd
 betamix_3d <- function(arr, mixnum=2, n.cores=1, ...){
   
   dims <- dim(arr)
@@ -88,6 +90,7 @@ betamix_3d <- function(arr, mixnum=2, n.cores=1, ...){
 #' @param n.cores number of cores used in parallel computing. Default is 1.
 #' @param ... additional parameters passed to `mclapply`
 #' @return A threshold value
+#' @noRd
 betamix_4d <- function(arr, mixnum=2, n.cores=1, ...) {
   dims <- dim(arr)
   Z <- dims[3]

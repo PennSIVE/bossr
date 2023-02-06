@@ -5,6 +5,7 @@
 #' @param arr array to subset
 #' @param n index of last dimension to subset on
 #' @return array subsetted on last dimension at index `n`
+#' @noRd
 last_ind <- function(arr, n){
     nd <- length(dim(arr))
     # uncomment the following line if x could be a plain vector without dim
@@ -21,6 +22,7 @@ last_ind <- function(arr, n){
 #' @param arr array to subset
 #' @param k minimum number of adjacent values
 #' @return unique values that span at least k cells over last dimension of the array
+#' @noRd
 get_k_long_labels <- function(arr, k){
 
     dlength <- rev(dim(arr))[1]
@@ -40,6 +42,7 @@ get_k_long_labels <- function(arr, k){
 #' @param arr array
 #' @param label value to get size of
 #' @return sum of elements in array that match label
+#' @noRd
 get_size <- function(arr, label) data.frame(sum(arr == label, na.rm = TRUE))
 
 #'Get centroid of a value in an array
@@ -49,6 +52,7 @@ get_size <- function(arr, label) data.frame(sum(arr == label, na.rm = TRUE))
 #' @param arr array
 #' @param label value to get centroid of
 #' @return centroid of elements in array that match label
+#' @noRd
 get_centroid <- function(arr, label){
     centroid <- which(arr == label, arr.ind = TRUE) |>
         apply(2, mean) |> 
@@ -63,6 +67,7 @@ get_centroid <- function(arr, label){
 #' @param arr array
 #' @param label value to make dataframe of
 #' @return dataframe of size and centroid of elements in array that match label
+#' @noRd
 make_cell_df <- function(arr, label) {
     list(label, get_size(arr, label), get_centroid(arr, label)) |> 
     purrr::reduce(c) |>
