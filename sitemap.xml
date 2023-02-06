@@ -25,40 +25,16 @@
     <loc>https://pennsive.github.io/bossr/reference/annotate_df.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/betamix_2d.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/betamix_3d.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/betamix_4d.html</loc>
-  </url>
-  <url>
     <loc>https://pennsive.github.io/bossr/reference/betamix_img.html</loc>
   </url>
   <url>
     <loc>https://pennsive.github.io/bossr/reference/connect_components.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/get_centroid.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/get_k_long_labels.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/get_size.html</loc>
-  </url>
-  <url>
     <loc>https://pennsive.github.io/bossr/reference/index.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/last_ind.html</loc>
-  </url>
-  <url>
     <loc>https://pennsive.github.io/bossr/reference/list2nifti.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/make_cell_df.html</loc>
   </url>
   <url>
     <loc>https://pennsive.github.io/bossr/reference/make_overlay.html</loc>
@@ -67,22 +43,7 @@
     <loc>https://pennsive.github.io/bossr/reference/median_filtering.html</loc>
   </url>
   <url>
-    <loc>https://pennsive.github.io/bossr/reference/median_filtering_3d.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/median_filtering_4d.html</loc>
-  </url>
-  <url>
     <loc>https://pennsive.github.io/bossr/reference/post_process_df.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/threshold_2d.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/threshold_3d.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/threshold_4d.html</loc>
   </url>
   <url>
     <loc>https://pennsive.github.io/bossr/reference/threshold_img.html</loc>
