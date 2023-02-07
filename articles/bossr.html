@@ -95,7 +95,7 @@ applied to reduce noise in the mask.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">mask_filtered</span> <span class="op">&lt;-</span> <span class="fu">bossr</span><span class="fu">::</span><span class="fu"><a href="../reference/median_filtering.html">median_filtering</a></span><span class="op">(</span><span class="va">mask</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt; 183.404   0.567 183.991</span></span></code></pre></div>
+<span><span class="co">#&gt; 211.914   0.542 212.483</span></span></code></pre></div>
 <p>And once the mask has been filtered,
 <code><a href="../reference/connect_components.html">bossr::connect_components()</a></code> will detect individual cells
 via a connected components algorithm. This operation will result in
@@ -103,7 +103,7 @@ distinct labels being produced.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu">bossr</span><span class="fu">::</span><span class="fu"><a href="../reference/connect_components.html">connect_components</a></span><span class="op">(</span><span class="va">mask_filtered</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   0.347   0.312   0.658</span></span></code></pre></div>
+<span><span class="co">#&gt;   8.909   0.905   9.816</span></span></code></pre></div>
 <p>To produce a description of the location and size of each cell, we
 use <code><a href="../reference/track_components.html">bossr::track_components()</a></code> followed by
 <code><a href="../reference/post_process_df.html">bossr::post_process_df()</a></code> to perform imputation.</p>
@@ -115,10 +115,10 @@ use <code><a href="../reference/track_components.html">bossr::track_components()
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">bossr</span><span class="fu">::</span><span class="fu"><a href="../reference/annotate_df.html">annotate_df</a></span><span class="op">(</span><span class="va">cell_df</span>, t <span class="op">=</span> <span class="fl">8</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   t count addition deletion survivor</span></span>
-<span><span class="co">#&gt; 1 1     0        2        0        0</span></span>
-<span><span class="co">#&gt; 2 2     2        1        1        0</span></span>
-<span><span class="co">#&gt; 3 3     2        1        1        0</span></span>
-<span><span class="co">#&gt; 4 4     2        0        2        0</span></span>
+<span><span class="co">#&gt; 1 1     2        0        0        2</span></span>
+<span><span class="co">#&gt; 2 2     2        0        2        0</span></span>
+<span><span class="co">#&gt; 3 3     0        3        0        0</span></span>
+<span><span class="co">#&gt; 4 4     3        0        3        0</span></span>
 <span><span class="co">#&gt; 5 5     0        0        0        0</span></span>
 <span><span class="co">#&gt; 6 6     0        0        0        0</span></span>
 <span><span class="co">#&gt; 7 7     0        0        0        0</span></span>
