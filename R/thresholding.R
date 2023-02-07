@@ -8,7 +8,7 @@
 #' @return binary mask where pixels with values greater than the threshold are set to 1 and all others are set to 0
 #' @noRd
 threshold_2d <- function(img, thr){
-    roi_mask <- (img > thr) |> apply(2, as.numeric)
+    roi_mask <- (img >= thr) |> apply(2, as.numeric)
     roi_mask[is.na(roi_mask)] <- 0 # override NA (cause: 0-everywhere slice)
     return(roi_mask)
 }
