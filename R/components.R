@@ -72,7 +72,7 @@ make_cell_df <- function(arr, label) {
     list(label, get_size(arr, label), get_centroid(arr, label)) |> 
     purrr::reduce(c) |>
     as.data.frame() |>
-    setNames(c('index','size', 'x', 'y', 'z')) 
+    stats::setNames(c('index','size', 'x', 'y', 'z')) 
 }
 
 #' Connected components in an array

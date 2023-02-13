@@ -14,15 +14,15 @@ betamix_2d <- function(arr, mixnum = 2){
     return(NA)
   }
   q = 0.99
-  min.intensity <- quantile(x, probs = q) 
+  min.intensity <- stats::quantile(x, probs = q) 
   while(! any(x > min.intensity)){
     q = q - 0.01
-    min.intensity <- quantile(x, probs = q)
+    min.intensity <- stats::quantile(x, probs = q)
   }
   x <- x [x > min.intensity]
   original.scale.x <- range(x)
   
-  threshold <- quantile(x, 0.8) 
+  threshold <- stats::quantile(x, 0.8) 
   x <- scales::rescale(x, to = c(0.0001,0.9999), from = original.scale.x)
   
   x.beta <- data.frame(y = x)
@@ -30,8 +30,8 @@ betamix_2d <- function(arr, mixnum = 2){
   
   if (length(unique(modeltools::clusters(m))) > 1){ 
     
-    mu <- plogis(coef(m)[,1])
-    phi <- exp(coef(m)[,2])
+    mu <- stats::plogis(stats::coef(m)[,1])
+    phi <- exp(stats::coef(m)[,2])
     
     a <- mu * phi
     b <- (1 - mu) * phi
@@ -39,11 +39,11 @@ betamix_2d <- function(arr, mixnum = 2){
     ys <- seq(0, 1, by = 0.01)
     
     if ( mu[1] > mu[2] ){
-        density.difference <- dbeta(ys, shape1 = a[1], shape2 = b[1]) - 
-                              dbeta(ys, shape1 = a[2], shape2 = b[2])
+        density.difference <- stats::dbeta(ys, shape1 = a[1], shape2 = b[1]) - 
+                              stats::dbeta(ys, shape1 = a[2], shape2 = b[2])
     } else {
-        density.difference <- dbeta(ys, shape1 = a[2], shape2 = b[2]) - 
-                              dbeta(ys, shape1 = a[1], shape2 = b[1])
+        density.difference <- stats::dbeta(ys, shape1 = a[2], shape2 = b[2]) - 
+                              stats::dbeta(ys, shape1 = a[1], shape2 = b[1])
     }
     
     intersection.point <- (which(diff(density.difference > 0) != 0) + 1)
