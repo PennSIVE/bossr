@@ -4,6 +4,7 @@
 #'
 #' @param roi_mask 3D array of image
 #' @param r kernel size for median filter
+#' @param ... extra arguments passed to mclapply
 #' @return 3D array of median filtered image
 #' @noRd
 median_filtering_3d <- function(roi_mask, r = 10){
@@ -20,6 +21,7 @@ median_filtering_3d <- function(roi_mask, r = 10){
 #' @param roi_mask 4D array of image
 #' @param r kernel size for median filter
 #' @param n.cores number of cores to use for parallel processing
+#' @param ... extra arguments passed to mclapply
 #' @return 4D array of median filtered image
 #' @noRd
 median_filtering_4d <- function(roi_mask, r = 10, n.cores=1, ...) {
@@ -40,6 +42,7 @@ median_filtering_4d <- function(roi_mask, r = 10, n.cores=1, ...) {
 #' @param roi_mask image to be median filtered (3D or 4D array)
 #' @param r kernel size for median filter
 #' @param n.cores number of cores
+#' @param ... extra arguments passed to mclapply
 #' @export median_filtering
 median_filtering <- function(roi_mask, r = 10, n.cores=1, ...) {
   dims <- dim(roi_mask)

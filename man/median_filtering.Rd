@@ -12,6 +12,8 @@ median_filtering(roi_mask, r = 10, n.cores = 1, ...)
 \item{r}{kernel size for median filter}
 
 \item{n.cores}{number of cores}
+
+\item{...}{extra arguments passed to mclapply}
 }
 \description{
 The function takes an image and applies the appropriate median filter function

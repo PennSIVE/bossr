@@ -21,6 +21,7 @@ threshold_2d <- function(img, thr){
 #' @param img 3D array of image
 #' @param thr vector of threshold values (one for each slice of the image)
 #' @param n.cores number of cores to use for parallel processing
+#' @param ... extra arguments passed to mclapply
 #' @return 3D binary mask
 #' @noRd
 threshold_3d <- function(img, thr, n.cores=1, ...){
@@ -39,6 +40,7 @@ threshold_3d <- function(img, thr, n.cores=1, ...){
 #' @param img 4D array of image
 #' @param thr matrix of threshold values (one for each slice and time point of the image)
 #' @param n.cores number of cores to use for parallel processing
+#' @param ... extra arguments passed to mclapply
 #' @return 4D binary mask
 #' @noRd
 threshold_4d <- function(img, thr, n.cores=1, ...){
@@ -70,6 +72,7 @@ threshold_4d <- function(img, thr, n.cores=1, ...){
 #' @param img image to be thresholded (2D, 3D, or 4D array)
 #' @param thr threshold value (scalar, vector, or matrix)
 #' @param n.cores number of cores to use for parallel processing (only used in threshold_3d and threshold_4d)
+#' @param ... extra arguments passed to mclapply
 #' @return binary mask of thresholded image (same dimensionality as input image)
 #' @export
 threshold_img <- function(img, thr, n.cores=1, ...){

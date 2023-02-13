@@ -12,6 +12,8 @@ threshold_img(img, thr, n.cores = 1, ...)
 \item{thr}{threshold value (scalar, vector, or matrix)}
 
 \item{n.cores}{number of cores to use for parallel processing (only used in threshold_3d and threshold_4d)}
+
+\item{...}{extra arguments passed to mclapply}
 }
 \value{
 binary mask of thresholded image (same dimensionality as input image)
