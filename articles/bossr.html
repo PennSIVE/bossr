@@ -95,7 +95,7 @@ applied to reduce noise in the mask.</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">mask_filtered</span> <span class="op">&lt;-</span> <span class="fu">bossr</span><span class="fu">::</span><span class="fu"><a href="../reference/median_filtering.html">median_filtering</a></span><span class="op">(</span><span class="va">mask</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt; 233.549   0.583 234.180</span></span></code></pre></div>
+<span><span class="co">#&gt; 185.326   0.464 185.801</span></span></code></pre></div>
 <p>And once the mask has been filtered,
 <code><a href="../reference/connect_components.html">bossr::connect_components()</a></code> will detect individual cells
 via a connected components algorithm. This operation will result in
@@ -103,7 +103,7 @@ distinct labels being produced.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/system.time.html" class="external-link">system.time</a></span><span class="op">(</span><span class="va">labels</span> <span class="op">&lt;-</span> <span class="fu">bossr</span><span class="fu">::</span><span class="fu"><a href="../reference/connect_components.html">connect_components</a></span><span class="op">(</span><span class="va">mask_filtered</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt;    user  system elapsed </span></span>
-<span><span class="co">#&gt;   9.027   1.049  10.077</span></span></code></pre></div>
+<span><span class="co">#&gt;   7.407   0.848   8.255</span></span></code></pre></div>
 <p>To produce a description of the location and size of each cell, we
 use <code><a href="../reference/track_components.html">bossr::track_components()</a></code> followed by
 <code><a href="../reference/post_process_df.html">bossr::post_process_df()</a></code> to perform imputation.</p>
