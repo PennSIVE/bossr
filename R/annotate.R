@@ -84,7 +84,7 @@ make_overlay <- function(cell_df, dims, t){
   if(! t %in% seq_len(dims[4])) stop("t is outside of the specified dimensions.")
   ## get cells at timepoint t
   df_t <- cell_df |>
-    dplyr::filter(t == .env$t) #.env$t is the parameter passed to the function
+    dplyr::filter(.data$t == t) 
   
   index_t <- unique(df_t$index)
   
@@ -93,9 +93,9 @@ make_overlay <- function(cell_df, dims, t){
   t_adj <- intersect(c(t-1, t+1), 
                      seq_len(dims[4]))
   # get the cells at the adj
-  df_t_adj <- df |>
-    dplyr::filter(t %in% t_adj, 
-                  index %in% index_t) 
+  df_t_adj <- cell_df |>
+    dplyr::filter(.data$t %in% t_adj, 
+                  .data$index %in% index_t) 
   
   ## combine data.frames then make mask
   df_t_all <- rbind(df_t, df_t_adj) 

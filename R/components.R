@@ -117,7 +117,7 @@ track_components <- function(roi_labels, k = 2, size.thr = 10){
     # for label (i) in timepoint (.y) get cell dimensions
     purrr::imap(~ if(length(.x) != 0) purrr::map(.x, function (i) make_cell_df(roi_labels[,,,.y], i) |> cbind(t = .y))) |> # .x is an intermediate vector that
     dplyr::bind_rows() |>
-    dplyr::filter(size > size.thr)
+    dplyr::filter(.data$size > size.thr)
   
   cell_df
 }
@@ -146,9 +146,9 @@ post_process_df <- function(df){
     index.Z <- df[which(df$index==i),"z"]
     
     # Filter df using dplyr to create new.df with rows that meet the criteria in the three filter statements
-    new.df <- df |> dplyr::filter(x <= max(index.X)+30 & x>= min(index.X)-30) |> 
-      dplyr::filter(y <= max(index.Y)+30 & y >= min(index.Y)-30) |>
-      dplyr::filter(z <= max(index.Z)+5 & z >= min(index.Z)-5) 
+    new.df <- df |> dplyr::filter(.data$x <= max(index.X)+30 & .data$x>= min(index.X)-30) |> 
+      dplyr::filter(.data$y <= max(index.Y)+30 & .data$y >= min(index.Y)-30) |>
+      dplyr::filter(.data$z <= max(index.Z)+5 & .data$z >= min(index.Z)-5) 
     
     # Check if the length of unique values of the "index" column in new.df is greater than 1 and equal to the number of rows in new.df 
     if(length(unique(new.df$index)) >1 && length(unique(new.df$t)) == nrow(new.df)){
