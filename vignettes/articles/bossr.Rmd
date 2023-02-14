@@ -6,6 +6,8 @@ title: "Introduction to the bossr pipeline"
 knitr::opts_chunk$set(
   collapse = TRUE,
   cache = TRUE,
+  cache.path = 'cache/',
+  cache.lazy = TRUE,
   comment = "#>"
 )
 ```
@@ -17,63 +19,77 @@ Install the companion package to follow along the vignette: `install.packages('b
 library(bossr)
 library(bossrdata)
 data(oligo)
-n.cores = 4
+n.cores = parallel::detectCores()
 ```
 
-The oligo dataset in bossrdata consists of a small 4D segment taken from oligodentrocyte-stained images (TODO: update to correct language).
+The `oligo` dataset in `bossrdata` consists of a small 4D segment taken from oligodentrocyte-stained images (TODO: update to correct language).
 
 ```{r oligo}
 # Oligo is a 4D array
 str(oligo)
 ```
 
-The array functions in bossr are easily parallelizable and detect dimensionality of the input array. `bossr::betamix_img()` produces a threshold for each slice of an array. 
+The array functions in bossr are easily parallelizable and detect dimensionality of the input array. The first function in the pipeline, `bossr::betamix_img()`, produces a threshold for each slice of an array. 
 
 ```{r betamix.img}
-thr <- bossr::betamix_img(oligo, n.cores = 4)
+thr <- bossr::betamix_img(oligo, n.cores = n.cores)
 ```
 
 The resulting threshold can be applied with `bossr::threshold_img()`, which produces a mask.
 
 ```{r threshold}
-mask <- bossr::threshold_img(oligo, thr, n.cores = 4)
+mask <- bossr::threshold_img(oligo, thr, n.cores = n.cores)
 ```
 
-After thresholding, a `bossr::median_filtering()` can be applied to reduce noise in the mask. 
+Below, we visualize the results of the masking operation for `z=1` and `t=1`. To the left the original array; to the right the resulting mask.
+
+```{r, echo=FALSE}
+oro.nifti::slice(oligo)
+oro.nifti::slice(mask)
+par(mfrow=c(1,2))
+```
+After thresholding, `bossr::median_filtering()` is applied to reduce noise in the mask. 
 
 ```{r median_filtering}
-system.time(mask_filtered <- bossr::median_filtering(mask))
+mask_filtered <- bossr::median_filtering(mask)
 ```
 
-And once the mask has been filtered, `bossr::connect_components()` will detect individual cells via a connected components algorithm. This operation will result in distinct labels being produced.
+```{r, echo=TRUE}
+oro.nifti::slice(oligo)
+oro.nifti::slice(mask_filtered)
+par(mfrow=c(1,2))
+```
+
+And once the mask has been filtered, `bossr::connect_components()` will detect individual cells via a connected components algorithm. This operation will result in distinct labels being produced for each cell.
 
 ```{r connect_components}
-system.time(labels <- bossr::connect_components(mask_filtered))
+labels <- bossr::connect_components(mask_filtered)
 ```
 
-To produce a description of the location and size of each cell, we use `bossr::track_components()` followed by `bossr::post_process_df()` to perform imputation.
+To produce a description of the location and size of each cell, we use `bossr::track_components()` followed by `bossr::post_process_df()` to perform imputation of cells across timepoints. These two functions output a `data.frame` and can be easily piped. 
 
 ```{r cell_df}
 cell_df <- bossr::track_components(labels) |> 
   bossr::post_process_df()
+head(cell_df)
 ```
 
-A summary of how cell counts change over time can be produced with `bossr::annotate_df()`
+A summary of how cell counts change over time can be produced with `bossr::annotate_df()`. [TODO: document what each column means]
 
 ```{r annotate_df}
-bossr::annotate_df(cell_df, t = 8)
+bossr::annotate_df(cell_df, t = 4)
+```
+
+Then, we can produce a 3D overlay that draws a box around each cells centroid with `bossr::make_overlay()`: we just need to pick a time point and specify the overlay dimensions. 
+
+```{r}
+my_overlay <- bossr::make_overlay(cell_df, dim(oligo), t = 2)
 ```
 
 
-```{r, eval=FALSE, include=FALSE, echo=FALSE}
-overlay <- bossr::make_overlay(cell_df, dim(oligo), t = 2) |> as.nifti()
-nifti_t <- as.nifti(oligo[,,,3])
-overlay.nifti(nifti_t,
-              overlay,
-              #col.y = 
-              z = 42,
-              plot.type = 'single')
 
-
+```{r}
+bossr::plot_overlay(oligo[,,,4], my_overlay, z = 30)
 ```
+
 

@@ -100,9 +100,33 @@ make_overlay <- function(cell_df, dims, t){
   ## combine data.frames then make mask
   df_t_all <- rbind(df_t, df_t_adj) 
   
-  df_t_all |>
+  overlay <- df_t_all |>
     split(seq_len(nrow(df_t_all))) |> # split data.frame into a list of rows
     purrr::map(draw_box) |> # draw box for each row
     purrr::reduce(pmax) # take 'union' 
+  
+  overlay[which(overlay == 0, arr.ind = TRUE)] <- NA
+  overlay <- oro.nifti::as.nifti(overlay)
+  return(overlay)
 }
+
+#' Plots a 3D image with an overlay
+#' 
+#' `plot_overlay` is a wrapper to `oro.nifti::overlay`. It takes a 3D image and an overlay that is the output of `make_overlay()` and plots the chosen slices.
+#' @param img 3D nifti or array, usually the input of the boss model
+#' @param overlay an overlay that is the result of `make_overlay`
+#' @param z an integer vector representing the slices to be plotted
+#' @return a plot where the cell bodies are marked by the a red overlay
+#' @export
+plot_overlay <- function(img, overlay, z = 1){
+  
+  if(length(dim(img)) >= 4) stop("Image must have 3 dimensions at most.") 
+  
+  oro.nifti::overlay(img,
+                     overlay,
+                     col.y = scales::alpha('red', 0.5),
+                     z = z,
+                     plot.type = 'single')
+}
+
 
