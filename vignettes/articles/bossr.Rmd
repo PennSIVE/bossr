@@ -19,7 +19,6 @@ Install the companion package to follow along the vignette: `install.packages('b
 library(bossr)
 library(bossrdata)
 data(oligo)
-n.cores = parallel::detectCores()
 ```
 
 The `oligo` dataset in `bossrdata` consists of a small 4D segment taken from oligodentrocyte-stained images (TODO: update to correct language).
@@ -32,6 +31,7 @@ str(oligo)
 The array functions in bossr are easily parallelizable and detect dimensionality of the input array. The first function in the pipeline, `bossr::betamix_img()`, produces a threshold for each slice of an array. 
 
 ```{r betamix.img}
+n.cores = parallel::detectCores() # detect cores automatically (or can also be set manually)
 thr <- bossr::betamix_img(oligo, n.cores = n.cores)
 ```
 
@@ -43,21 +43,20 @@ mask <- bossr::threshold_img(oligo, thr, n.cores = n.cores)
 
 Below, we visualize the results of the masking operation for `z=1` and `t=1`. To the left the original array; to the right the resulting mask.
 
-```{r, echo=FALSE}
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
 oro.nifti::slice(oligo)
 oro.nifti::slice(mask)
-par(mfrow=c(1,2))
 ```
+
 After thresholding, `bossr::median_filtering()` is applied to reduce noise in the mask. 
 
 ```{r median_filtering}
 mask_filtered <- bossr::median_filtering(mask)
 ```
 
-```{r, echo=TRUE}
+```{r, echo=FALSE, fig.show="hold", out.width="50%"}
 oro.nifti::slice(oligo)
 oro.nifti::slice(mask_filtered)
-par(mfrow=c(1,2))
 ```
 
 And once the mask has been filtered, `bossr::connect_components()` will detect individual cells via a connected components algorithm. This operation will result in distinct labels being produced for each cell.
@@ -83,13 +82,19 @@ bossr::annotate_df(cell_df, t = 4)
 Then, we can produce a 3D overlay that draws a box around each cells centroid with `bossr::make_overlay()`: we just need to pick a time point and specify the overlay dimensions. 
 
 ```{r}
-my_overlay <- bossr::make_overlay(cell_df, dim(oligo), t = 2)
+my_overlay <- bossr::make_overlay(cell_df, dim(oligo), t = 1)
 ```
 
-
+For `t = 1` the first cell in `cell_df` has a centroid at `z = 67`: to help us examine the correctness of this entry, we can use `bossr::plot_overlay()` which takes a 3D image, an overlay made by `bossr::make_overlay()` and chosen slice `z`. We 
 
 ```{r}
-bossr::plot_overlay(oligo[,,,4], my_overlay, z = 30)
+bossr::plot_overlay(oligo[,,,1], my_overlay, z = 67)
+```
+
+We see that the centroid is correctly specified for the upper cell. The bottom cell's centroid is at `z = 7` so it won't show up in this slice.
+
+```{r}
+bossr::plot_overlay(oligo[,,,1], my_overlay, z = 7)
 ```
 
 
