@@ -4,7 +4,7 @@
 \alias{track_components}
 \title{Track connected components in 4D array}
 \usage{
-track_components(roi_labels, k = 2, size.thr = 10)
+track_components(roi_labels, k = 2, size.thr = 100)
 }
 \arguments{
 \item{roi_labels}{labeled array of connected components}

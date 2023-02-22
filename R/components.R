@@ -100,7 +100,7 @@ connect_components <- function(roi_mask, r = 21){
 #' @param size.thr minimum size of component to be tracked
 #' @return dataframe of tracked components
 #' @export
-track_components <- function(roi_labels, k = 2, size.thr = 10){
+track_components <- function(roi_labels, k = 2, size.thr = 100){
   # 1. subset array based on Z <- should this be done outside the function?
   # 2. split into list based on t
   # 3. take unique for each split (map)
