@@ -46,7 +46,14 @@
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="../search.json" id="search-input" placeholder="Search for" autocomplete="off">
 </form>
 
-      <ul class="navbar-nav"></ul>
+      <ul class="navbar-nav">
+<li class="nav-item">
+  <a class="external-link nav-link" href="https://github.com/pennsive/bossr/" aria-label="github">
+    <span class="fab fa fab fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 
     
@@ -61,7 +68,7 @@
       <img src="" class="logo" alt=""><h1>Introduction to the bossr pipeline</h1>
             
       
-      
+      <small class="dont-index">Source: <a href="https://github.com/pennsive/bossr/blob/HEAD/vignettes/articles/bossr.Rmd" class="external-link"><code>vignettes/articles/bossr.Rmd</code></a></small>
       <div class="d-none name"><code>bossr.Rmd</code></div>
     </div>
 
@@ -70,16 +77,19 @@
 <p>Install the companion package to follow along the vignette:
 <code>install.packages('bossrdata', repos = 'https://pennsive.github.io/drat', type='source')</code>.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://vgonzenbach.github.io/bossr/" class="external-link">bossr</a></span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://pennsive.github.io/bossr/">bossr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">bossrdata</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">oligo</span><span class="op">)</span></span></code></pre></div>
 <p>The <code>oligo</code> dataset in <code>bossrdata</code> consists of
-a small 4D segment taken from oligodentrocyte-stained images (TODO:
-update to correct language).</p>
+a small 4D array from a region-of-interest in cortex from an adult
+transgenic mouse expressing EGFP in the cytoplasm of oligodendrocytes
+(MOBP-EGFP). This same region was imaged at least weekly using
+two-photon imaging through a cranial window over the course of
+cuprizone-treatment and recovery.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Oligo is a 4D array</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/str.html" class="external-link">str</a></span><span class="op">(</span><span class="va">oligo</span><span class="op">)</span></span>
-<span><span class="co">#&gt;  num [1:300, 1:300, 1:81, 1:4] 0.00391 0.00781 0.01953 0.00391 0.00391 ...</span></span></code></pre></div>
+<span><span class="co">#&gt;  num [1:300, 1:300, 1:81, 1:4] 0.00391 0.11328 0.03125 0.02344 0.10938 ...</span></span></code></pre></div>
 <p>The array functions in bossr are easily parallelizable and detect
 dimensionality of the input array. The first function in the pipeline,
 <code><a href="../reference/betamix_img.html">bossr::betamix_img()</a></code>, produces a threshold for each slice
@@ -116,22 +126,22 @@ and can be easily piped.</p>
 <span>  <span class="fu">bossr</span><span class="fu">::</span><span class="fu"><a href="../reference/post_process_df.html">post_process_df</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cell_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   index  size         x         y         z t</span></span>
-<span><span class="co">#&gt; 1    13 11960  25.60426 172.40067 67.057191 1</span></span>
-<span><span class="co">#&gt; 2    15    96  14.48958 271.55208 34.395833 1</span></span>
-<span><span class="co">#&gt; 3    21 21262 226.20821  45.96411  7.347945 1</span></span>
-<span><span class="co">#&gt; 4    13  5542  30.94280 145.61133 63.817936 2</span></span>
-<span><span class="co">#&gt; 5    14   144  30.36111 274.56944 41.395833 2</span></span>
-<span><span class="co">#&gt; 6    15   185  14.65405 256.75676 33.967568 2</span></span></code></pre></div>
+<span><span class="co">#&gt; 1    13 11960 172.40067 275.39574 67.057191 1</span></span>
+<span><span class="co">#&gt; 2    21 21262  45.96411  74.79179  7.347945 1</span></span>
+<span><span class="co">#&gt; 3    13  5542 145.61133 270.05720 63.817936 2</span></span>
+<span><span class="co">#&gt; 4    14   144 274.56944 270.63889 41.395833 2</span></span>
+<span><span class="co">#&gt; 5    15   185 256.75676 286.34595 33.967568 2</span></span>
+<span><span class="co">#&gt; 6    21  4741  45.63847  76.38220  6.109682 2</span></span></code></pre></div>
 <p>A summary of how cell counts change over time can be produced with
-<code><a href="../reference/annotate_df.html">bossr::annotate_df()</a></code>. [TODO: document what each column
-means]</p>
+<code><a href="../reference/annotate_df.html">bossr::annotate_df()</a></code> (see function reference for details on
+column meanings).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">bossr</span><span class="fu">::</span><span class="fu"><a href="../reference/annotate_df.html">annotate_df</a></span><span class="op">(</span><span class="va">cell_df</span>, t <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   t count addition deletion survivor</span></span>
-<span><span class="co">#&gt; 1 1     3        1        0        3</span></span>
-<span><span class="co">#&gt; 2 2     4        1        3        0</span></span>
-<span><span class="co">#&gt; 3 3     2        2        1        0</span></span>
-<span><span class="co">#&gt; 4 4     3        0        3        0</span></span></code></pre></div>
+<span><span class="co">#&gt;   t n added deleted survivor</span></span>
+<span><span class="co">#&gt; 1 1 2    NA       0       NA</span></span>
+<span><span class="co">#&gt; 2 2 4     2       4        2</span></span>
+<span><span class="co">#&gt; 3 3 1     1       1        0</span></span>
+<span><span class="co">#&gt; 4 4 1     1      NA        0</span></span></code></pre></div>
 <p>Then, we can produce a 3D overlay that draws a box around each cells
 centroid with <code><a href="../reference/make_overlay.html">bossr::make_overlay()</a></code>: we just need to pick a
 time point and specify the overlay dimensions.</p>
