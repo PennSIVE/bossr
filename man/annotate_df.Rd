@@ -17,12 +17,9 @@ A dataframe with 4 columns: count, addition, deletion, and survivor.
 \description{
 This function takes in a dataframe that is result of post.process.df (or track.components)
 and an integer t (total timepoints), and returns a dataframe with 4 columns:
-count, addition, deletion, and survivor. The count column
-contains the number of rows in the input dataframe where the "t" column has
-a value equal to j, for each j in 1 to t. The addition column contains the
-number of new rows in the dataframe between time j and j + 1. The deletion
-column contains the number of rows in the dataframe at time j that do not
-appear in the dataframe at any later time. The survivor column contains
-the number of rows in the dataframe at time j that also appear in the dataframe
-at time j + 1.
+\code{count}, \code{added}, \code{deleted}, and \code{survivor}. \code{count} is the number of cells at timepoint t.
+\code{added} is the number of new cells in timepoint t (relative to timepoint t - 1);
+\code{added} is always NA for t = 1.
+\code{deleted} is the number of cells at t that do not show up at later timepoints.
+\code{survivor} is the number of cells at timepoint t that remain from timepoint 1.
 }

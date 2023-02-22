@@ -2,59 +2,70 @@
 #'
 #' This function takes in a dataframe that is result of post.process.df (or track.components) 
 #' and an integer t (total timepoints), and returns a dataframe with 4 columns: 
-#' count, addition, deletion, and survivor. The count column
-#' contains the number of rows in the input dataframe where the "t" column has
-#' a value equal to j, for each j in 1 to t. The addition column contains the
-#' number of new rows in the dataframe between time j and j + 1. The deletion
-#' column contains the number of rows in the dataframe at time j that do not
-#' appear in the dataframe at any later time. The survivor column contains
-#' the number of rows in the dataframe at time j that also appear in the dataframe
-#' at time j + 1.
+#' `count`, `added`, `deleted`, and `survivor`. `count` is the number of cells at timepoint t. 
+#' `added` is the number of new cells in timepoint t (relative to timepoint t - 1); 
+#' `added` is always NA for t = 1. 
+#' `deleted` is the number of cells at t that do not show up at later timepoints.
+#' `survivor` is the number of cells at timepoint t that remain from timepoint 1.
 #'
 #' @param df A dataframe
 #' @param t An integer value
 #' @return A dataframe with 4 columns: count, addition, deletion, and survivor.
 #' @import dplyr
 #' @export
-annotate_df <- function(df, t){
+annotate_df = function (df, t) {
   
+  annot_df <- data.frame(t = seq_len(t)) # declare return object
   
-  # Count
-  all.count <- rep(NA, t)
-  for(j in 1:t){
-    all.count[j] <- as.numeric(df|> filter(t==j)|> summarize(n = n()))
-  }
+  # get count at each t ----
+  count_df <- dplyr::count(cell_df, t)
+  annot_df <- annot_df |> 
+    dplyr::full_join(count_df, by = 't')
   
-  # Addition
-  all.add.count <- rep(NA, t)
-  for(j in 1:t){
-    roi.j <- df|> filter(t== j)
-    roi.j1 <- df|> filter(t == j+1)
+  # get num added at each t: get indices at timepoint t that are new relative to timepoint t - 1 ----
+  added_df <- split(cell_df$index, cell_df$t) |> # get indices at t
     
-    all.add.count[j] <- length(roi.j1$index) - sum(roi.j1$index %in% roi.j$index)
-  }
+    slider::slide(~ setdiff(unlist(.x[2]), # indices at timepoint t (see .before)
+                            unlist(.x[1])) |> # indices at timepoint t - 1
+                    length() |> 
+                    as.data.frame() |> 
+                    setNames('added'), 
+                  .before = 1) |> 
+    dplyr::bind_rows(.id = 't') |> 
+    dplyr::mutate(t = as.integer(t)) # add col for joining
+  annot_df <- annot_df |> 
+    dplyr::full_join(added_df, by = 't')
+  annot_df[1, 'added'] <- NA # set 0 to NA; timepoint 1 does not have a timepoint before it
   
-  # Deletion
-  all.del.count <- rep(NA, t)
-  for(i in 1:t){
-    all.dat.del.tmp <- df|> filter(t >i)
-    all.dat.del.tmp2 <- df|> filter(t==i)
-    all.del.count[i] <- sum(!(all.dat.del.tmp2$index %in% all.dat.del.tmp$index))
-  }
+  # get num deleted: for timepoint t, how many indices at t do not show up later (at T > t) ----
+  del_df <- split(cell_df$index, cell_df$t) |>
+    slider::slide(~ setdiff(unlist(.x[1]), # timepoint t
+                            unlist(.x[-1])) |> # all later timepoints (excluding timepoint t)
+                    length() |> 
+                    as.data.frame() |> 
+                    setNames('deleted'), 
+                  .after = Inf) |>
+    dplyr::bind_rows(.id = 't') |> 
+    dplyr::mutate(t = as.integer(t)) # add col for joining
+  del_df[nrow(del_df), 'deleted'] <- NA
+  annot_df <- annot_df |>  # join results 
+    dplyr::full_join(del_df, by = 't')
   
-  # Survival
-  all.survival.count <- rep(NA, t)
-  for(i in 1:t){
-    all.dat.survivor.tmp <- df|> filter(t ==i+1)
-    all.dat.survivor.tmp2 <- df|> filter(t==1)
-    all.survival.count[i] <- sum(all.dat.survivor.tmp2$index %in% all.dat.survivor.tmp$index)
-  }
-
-  data.frame(t = 1:t,
-             count = all.count, 
-             addition = all.add.count,
-             deletion = all.del.count,
-             survivor = all.survival.count)
+  # get survivors: at timepoint t, how many cells remain from timepoint 1
+  surv_df <- split(cell_df$index, cell_df$t) |>
+    slider::slide(~ intersect(unlist(.x[1]), # indices at timepoint 1
+                              unlist(.x[length(.x)])) |> # indices at timepoint t
+                    length() |> 
+                    as.data.frame() |> 
+                    setNames('survivor'),
+                  .before = Inf) |> 
+    dplyr::bind_rows(.id = 't') |> 
+    dplyr::mutate(t = as.integer(t)) # add col for joining
+  annot_df <- annot_df |>  # join results 
+    dplyr::full_join(surv_df, by = 't')
+  annot_df[1, 'survivor'] <- NA # redundant to compare timepoint 1 with itself
+  
+  return(annot_df)
 }
 
 #' Make Overlay
