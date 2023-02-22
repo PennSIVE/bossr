@@ -21,7 +21,7 @@ library(bossrdata)
 data(oligo)
 ```
 
-The `oligo` dataset in `bossrdata` consists of a small 4D segment taken from oligodentrocyte-stained images (TODO: update to correct language).
+The `oligo` dataset in `bossrdata` consists of a small 4D array from a region-of-interest in cortex from an adult transgenic mouse expressing EGFP in the cytoplasm of oligodendrocytes (MOBP-EGFP). This same region was imaged at least weekly using two-photon imaging through a cranial window over the course of cuprizone-treatment and recovery. 
 
 ```{r oligo}
 # Oligo is a 4D array
@@ -73,7 +73,7 @@ cell_df <- bossr::track_components(labels) |>
 head(cell_df)
 ```
 
-A summary of how cell counts change over time can be produced with `bossr::annotate_df()`. [TODO: document what each column means]
+A summary of how cell counts change over time can be produced with `bossr::annotate_df()` (see function reference for details on column meanings).
 
 ```{r annotate_df}
 bossr::annotate_df(cell_df, t = 4)
