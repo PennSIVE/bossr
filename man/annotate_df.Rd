@@ -4,10 +4,10 @@
 \alias{annotate_df}
 \title{Annotate data.frame}
 \usage{
-annotate_df(df, t)
+annotate_df(cell_df, t)
 }
 \arguments{
-\item{df}{A dataframe}
+\item{cell_df}{A dataframe that is the result from pos}
 
 \item{t}{An integer value}
 }
@@ -15,11 +15,11 @@ annotate_df(df, t)
 A dataframe with 4 columns: count, addition, deletion, and survivor.
 }
 \description{
-This function takes in a dataframe that is result of post.process.df (or track.components)
-and an integer t (total timepoints), and returns a dataframe with 4 columns:
-\code{count}, \code{added}, \code{deleted}, and \code{survivor}. \code{count} is the number of cells at timepoint t.
-\code{added} is the number of new cells in timepoint t (relative to timepoint t - 1);
+This function takes in a dataframe that is result of post_process_df (or track_components)
+and an integer t (total time points), and returns a dataframe with 4 columns:
+\code{count}, \code{added}, \code{deleted}, and \code{survivor}. \code{count} is the number of cells at time point t.
+\code{added} is the number of new cells in time point t (relative to time point t - 1);
 \code{added} is always NA for t = 1.
-\code{deleted} is the number of cells at t that do not show up at later timepoints.
-\code{survivor} is the number of cells at timepoint t that remain from timepoint 1.
+\code{deleted} is the number of cells at t that do not show up at later time points.
+\code{survivor} is the number of cells at time point t that remain from time point 1.
 }

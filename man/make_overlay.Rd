@@ -11,11 +11,11 @@ make_overlay(cell_df, dims, t)
 
 \item{dims}{A numeric vector of length 4, representing the dimensions of the image in x, y, z, and t}
 
-\item{t}{An integer representing the timepoint of interest}
+\item{t}{An integer representing the time point of interest}
 }
 \value{
 A 3-dimensional binary array representing the overlay
 }
 \description{
-This function creates an overlay by drawing boxes around centroids of cells in a dataframe, at a specified timepoint, as well as cells in adjacent timepoints.
+This function creates an overlay by drawing boxes around centroids of cells in a dataframe, at a specified time point, as well as cells in adjacent time points.
 }
