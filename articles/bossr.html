@@ -137,11 +137,11 @@ and can be easily piped.</p>
 column meanings).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">bossr</span><span class="fu">::</span><span class="fu"><a href="../reference/annotate_df.html">annotate_df</a></span><span class="op">(</span><span class="va">cell_df</span>, t <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
-<span><span class="co">#&gt;   t n added deleted survivor</span></span>
-<span><span class="co">#&gt; 1 1 2    NA       0       NA</span></span>
-<span><span class="co">#&gt; 2 2 4     2       4        2</span></span>
-<span><span class="co">#&gt; 3 3 1     1       1        0</span></span>
-<span><span class="co">#&gt; 4 4 1     1      NA        0</span></span></code></pre></div>
+<span><span class="co">#&gt;   t count added deleted survivor</span></span>
+<span><span class="co">#&gt; 1 1     2    NA      NA       NA</span></span>
+<span><span class="co">#&gt; 2 2     4     2       0        2</span></span>
+<span><span class="co">#&gt; 3 3     1     1       4        0</span></span>
+<span><span class="co">#&gt; 4 4     1     1       1        0</span></span></code></pre></div>
 <p>Then, we can produce a 3D overlay that draws a box around each cells
 centroid with <code><a href="../reference/make_overlay.html">bossr::make_overlay()</a></code>: we just need to pick a
 time point and specify the overlay dimensions.</p>
