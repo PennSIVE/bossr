@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# bossr
+# bossr <a href="https://pennsive.github.io/bossr/"><img src="man/figures/logo.png" align="right" height="139" /></a>
 
 <!-- badges: start --
 [![CRAN Status](https://www.r-pkg.org/badges/version/pkgdown)](https://cran.r-project.org/package=pkgdown){.pkgdown-release}
