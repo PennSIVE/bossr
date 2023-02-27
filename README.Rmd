@@ -20,6 +20,9 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/r-lib/pkgdown/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/pkgdown?branch=main)
  badges: end -->
 
+
+[![R-CMD-check](https://github.com/pennsive/bossr/workflows/R-CMD-check/badge.svg)](https://github.com/pennsive/bossr/actions?workflow=R-CMD-check)
+
 `bossr` consists of functions for automated segmentation of oligodendrocytes in 2D, 3D and 4D arrays. 
 
 ## Installation
