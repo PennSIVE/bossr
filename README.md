@@ -9,29 +9,40 @@
 [![Codecov test coverage](https://codecov.io/gh/r-lib/pkgdown/branch/main/graph/badge.svg)](https://app.codecov.io/gh/r-lib/pkgdown?branch=main)
  badges: end -->
 
-bossr consists of functions for automated segmentation of
-oligodendrocytes in 2D, 3D and 4D arrays. A companion data package
-‘bossrdata’ is available to enable users to follow along the examples in
-the vignettes. See the vignettes for more information on how to install
-‘bossrdata’.
+`bossr` consists of functions for automated segmentation of
+oligodendrocytes in 2D, 3D and 4D arrays.
 
 ## Installation
 
-``` r
+<!--
+To install the released version:
+
+```r
 # Install released version from our drat repository
 install.packages("bossr", repos='https://pennsive.github.io/drat')
 ```
+-->
 
-or the install the development
+To install the development version:
 
 ``` r
 devtools::install_github('pennsive/bossr')
 ```
 
-You can also choose to install an example dataset to get started \[TODO:
-add link\] with using bossr.
+## Usage
 
-``` r
-# Install the companion package
-install.packages("bossrdata", repos='https://pennsive.github.io/drat')
-```
+For an introduction to the `bossr` pipeline, check out the [main article
+in our pkgdown
+site](https://pennsive.github.io/bossr/articles/bossr.html).
+
+A companion data package, `bossrdata`, is available to enable users to
+follow along the examples in the main article. See the article for more
+information on how to install `bossrdata`.
+
+References to the main functions can be found
+[here](https://pennsive.github.io/bossr/reference/index.html).
+
+## Getting help
+
+To get help [submit an issue on the GitHub
+repository](https://github.com/PennSIVE/bossr/issues).
