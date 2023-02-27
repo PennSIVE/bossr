@@ -3,7 +3,6 @@
 export(annotate_df)
 export(betamix_img)
 export(connect_components)
-export(list2nifti)
 export(make_overlay)
 export(median_filtering)
 export(plot_overlay)

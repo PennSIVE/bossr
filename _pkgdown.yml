@@ -1,4 +1,30 @@
 url: https://pennsive.github.io/bossr/
 template:
   bootstrap: 5
+  
+reference:
+- title: Array functions of segmentation pipeline
+  desc: >
+    Functions that operate on 2D, 3D, and 4D arrays 
+  contents:
+  - betamix_img
+  - threshold_img
+  - median_filtering
+  - connect_components
+
+- title: Post-processing summary functions
+  desc: >
+    Functions that output a data.frame summarizing image information
+  contents:
+  - track_components
+  - post_process_df
+  - annotate_df
+
+- title: Visualization functions
+  desc: >
+    Functions that take arrays or data.frames as parameters with the purpose of
+    visualizing cell detection results 
+  contents:
+  - make_overlay
+  - plot_overlay
 

@@ -10,5 +10,5 @@
 #'
 #' # convert a list of 3D arrays to a 4D Nifti object
 #' list2nifti(list(array(1:12, c(3, 4, 3)), array(13:24, c(3, 4, 3))), c(3, 4, 3, 2))
-#' @export
+#' @noRd
 list2nifti <- function(list, dims) list |> unlist() |> array(dims) |> oro.nifti::as.nifti() 
