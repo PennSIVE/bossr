@@ -1,6 +1,6 @@
 Package: bossr
 Title: Beta-mixture Unsupervised Oligodendrocytes Segmentation System in R
-Version: 0.0.0.1
+Version: 1.0.0
 Authors@R: 
     c(
         person("Virgilio", "Gonzenbach", , "vgonzenb@upenn.edu", role = c("aut"),
