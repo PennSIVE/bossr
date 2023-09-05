@@ -32,7 +32,7 @@ get_k_long_labels <- function(arr, k){
         purrr::reduce(c) |> # concatenate 
         unique() |> 
         sort()
-    adj.vals[-1] # skip 0
+    # adj.vals[-1] # skip 0
 }
 
 #' Get size of a value in an array
