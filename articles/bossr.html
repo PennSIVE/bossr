@@ -133,22 +133,22 @@ and can be easily piped.</p>
 <span>  <span class="fu">bossr</span><span class="fu">::</span><span class="fu"><a href="../reference/post_process_df.html">post_process_df</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">cell_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   index  size         x         y         z t</span></span>
-<span><span class="co">#&gt; 1    13 11960 172.40067 275.39574 67.057191 1</span></span>
-<span><span class="co">#&gt; 2    21 21262  45.96411  74.79179  7.347945 1</span></span>
-<span><span class="co">#&gt; 3    13  5542 145.61133 270.05720 63.817936 2</span></span>
-<span><span class="co">#&gt; 4    14   144 274.56944 270.63889 41.395833 2</span></span>
-<span><span class="co">#&gt; 5    15   185 256.75676 286.34595 33.967568 2</span></span>
-<span><span class="co">#&gt; 6    21  4741  45.63847  76.38220  6.109682 2</span></span></code></pre></div>
+<span><span class="co">#&gt; 1     1  8437 111.86453  98.55517 71.729999 1</span></span>
+<span><span class="co">#&gt; 2    13 11960 172.40067 275.39574 67.057191 1</span></span>
+<span><span class="co">#&gt; 3    21 21262  45.96411  74.79179  7.347945 1</span></span>
+<span><span class="co">#&gt; 4     1  3021  90.51738  97.52996 70.080437 2</span></span>
+<span><span class="co">#&gt; 5    13  5542 145.61133 270.05720 63.817936 2</span></span>
+<span><span class="co">#&gt; 6    14   144 274.56944 270.63889 41.395833 2</span></span></code></pre></div>
 <p>A summary of how cell counts change over time can be produced with
 <code><a href="../reference/annotate_df.html">bossr::annotate_df()</a></code> (see function reference for details on
 column meanings).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">bossr</span><span class="fu">::</span><span class="fu"><a href="../reference/annotate_df.html">annotate_df</a></span><span class="op">(</span><span class="va">cell_df</span>, t <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span><span class="co">#&gt;   t count added deleted survivor</span></span>
-<span><span class="co">#&gt; 1 1     2    NA      NA       NA</span></span>
-<span><span class="co">#&gt; 2 2     4     2       0        2</span></span>
-<span><span class="co">#&gt; 3 3     1     1       4        0</span></span>
-<span><span class="co">#&gt; 4 4     1     1       1        0</span></span></code></pre></div>
+<span><span class="co">#&gt; 1 1     3    NA      NA       NA</span></span>
+<span><span class="co">#&gt; 2 2     5     2       0        3</span></span>
+<span><span class="co">#&gt; 3 3     2     1       4        1</span></span>
+<span><span class="co">#&gt; 4 4     2     1       1        1</span></span></code></pre></div>
 <p>Then, we can produce a 3D overlay that draws a box around each cells
 centroid with <code><a href="../reference/make_overlay.html">bossr::make_overlay()</a></code>: we just need to pick a
 time point and specify the overlay dimensions.</p>
