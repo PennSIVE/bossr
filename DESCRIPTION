@@ -3,10 +3,20 @@ Title: Beta-mixture Unsupervised Oligodendrocytes Segmentation System in R
 Version: 1.0.0
 Authors@R: 
     c(
-        person("Virgilio", "Gonzenbach", , "vgonzenb@upenn.edu", role = c("aut"),
-           comment = c(ORCID = "0000-0001-6600-1768")),
-        person("Eunchan", "Bae", , "ecbae@pennmedicine.upenn.edu", role = c("aut", "cre"),
-           comment = c(ORCID = "0000-0003-2941-3717"))
+        person(
+            given = "Virgilio", 
+            family = "Gonzenbach", 
+            email = "vgonzenb@upenn.edu", 
+            role = c("aut"),
+            comment = c(ORCID = "0000-0001-6600-1768")
+        ),
+        person(
+            given = "Eunchan", 
+            family = "Bae", 
+            email = "ecbae@pennmedicine.upenn.edu", 
+            role = c("aut", "cre"),
+            comment = c(ORCID = "0000-0003-2941-3717")
+        )
     )
 Description: Functions for automated segmentation of oligodendrocytes in 2D, 3D and 4D arrays. Exported functions of 'bossr' detect dimensionality
     of input arrays and call internal, parallellized functions for a user-friendly experience. A companion data package 'bossrdata' is available
@@ -14,7 +24,7 @@ Description: Functions for automated segmentation of oligodendrocytes in 2D, 3D 
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
 Imports: 
     betareg, 
     scales,
