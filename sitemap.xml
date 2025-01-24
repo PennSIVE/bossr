@@ -1,54 +1,20 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://pennsive.github.io/bossr/404.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/articles/bossr.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/annotate_df.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/betamix_img.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/connect_components.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/make_overlay.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/median_filtering.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/plot_overlay.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/post_process_df.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/threshold_img.html</loc>
-  </url>
-  <url>
-    <loc>https://pennsive.github.io/bossr/reference/track_components.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://pennsive.github.io/bossr/404.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/LICENSE-text.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/LICENSE.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/articles/bossr.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/articles/index.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/authors.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/index.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/reference/annotate_df.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/reference/betamix_img.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/reference/connect_components.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/reference/index.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/reference/make_overlay.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/reference/median_filtering.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/reference/plot_overlay.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/reference/post_process_df.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/reference/threshold_img.html</loc></url>
+<url><loc>https://pennsive.github.io/bossr/reference/track_components.html</loc></url>
 </urlset>
+

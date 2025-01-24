@@ -1,10 +1,9 @@
-pandoc: 2.19.2
-pkgdown: 2.0.7
+pandoc: 3.1.11
+pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
-  bossr: bossr.html
-last_built: 2023-09-12T13:26Z
+  articles/bossr: bossr.html
+last_built: 2025-01-24T18:35Z
 urls:
   reference: https://pennsive.github.io/bossr/reference
   article: https://pennsive.github.io/bossr/articles
-
