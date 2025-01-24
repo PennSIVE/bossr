@@ -3,7 +3,7 @@ pkgdown: 2.1.1
 pkgdown_sha: ~
 articles:
   articles/bossr: bossr.html
-last_built: 2025-01-24T18:35Z
+last_built: 2025-01-24T18:52Z
 urls:
   reference: https://pennsive.github.io/bossr/reference
   article: https://pennsive.github.io/bossr/articles
