@@ -12,7 +12,7 @@
 [![R-CMD-check](https://github.com/pennsive/bossr/workflows/R-CMD-check/badge.svg)](https://github.com/pennsive/bossr/actions?workflow=R-CMD-check)
 
 `bossr` consists of functions for automated segmentation of
-oligodendrocytes in 2D, 3D and 4D arrays.
+oligodendrocytes in 2D, 3D and 4D arrays. [FAST](https://https://www.eneuro.org/content/early/2025/01/08/ENEURO.0025-24.2024) model inherits the `bossr` with its pre-configured parameters. 
 
 ## Installation
 
@@ -48,3 +48,9 @@ References to the main functions can be found
 
 To get help [submit an issue on the GitHub
 repository](https://github.com/PennSIVE/bossr/issues).
+
+
+## References
+
+If you use the `bossr`, please cite the following papers: Bae, Eunchan, et al. "FAST: Fast, free, consistent, and unsupervised oligodendrocyte segmentation and tracking system." eNeuro (2025).
+
