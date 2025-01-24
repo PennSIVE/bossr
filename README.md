@@ -12,7 +12,7 @@
 [![R-CMD-check](https://github.com/pennsive/bossr/workflows/R-CMD-check/badge.svg)](https://github.com/pennsive/bossr/actions?workflow=R-CMD-check)
 
 `bossr` consists of functions for automated segmentation of
-oligodendrocytes in 2D, 3D and 4D arrays. [FAST](https://https://www.eneuro.org/content/early/2025/01/08/ENEURO.0025-24.2024) model inherits the `bossr` with its pre-configured parameters. 
+oligodendrocytes in 2D, 3D and 4D arrays. [FAST](https://www.eneuro.org/content/early/2025/01/08/ENEURO.0025-24.2024) model inherits the `bossr` with its pre-configured parameters. 
 
 ## Installation
 
